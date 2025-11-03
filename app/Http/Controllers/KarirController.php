@@ -12,10 +12,9 @@ class KarirController extends Controller
      */
     public function index()
     {
-        $karirs = Karir::all();
+        $karirs = Karir::orderBy('id', 'desc')->paginate(10);
         return view('karir.karir', compact('karirs'));
     }
-
 
     /**
      * Simpan data karir baru ke database.
@@ -33,15 +32,6 @@ class KarirController extends Controller
     }
 
     /**
-     * Tampilkan satu data karir berdasarkan ID.
-     */
-    public function show($id)
-    {
-        $karir = Karir::findOrFail($id);
-        return view('karir.show', compact('karir'));
-    }
-
-    /**
      * Update data karir di database.
      */
     public function update(Request $request, $id)
@@ -54,7 +44,7 @@ class KarirController extends Controller
         $karir = Karir::findOrFail($id);
         $karir->update($request->only(['nama_karir', 'deskripsi']));
 
-        return redirect()->route('karir.karir')->with('success', 'Karir berhasil diperbarui!');
+        return redirect()->route('karir.karir')->with('updated', 'Karir berhasil diperbarui!');
     }
 
     /**
@@ -65,6 +55,6 @@ class KarirController extends Controller
         $karir = Karir::findOrFail($id);
         $karir->delete();
 
-        return redirect()->route('karir.karir')->with('success', 'Karir berhasil dihapus!');
+        return redirect()->route('karir.karir')->with('deleted', 'Karir berhasil dihapus!');
     }
 }

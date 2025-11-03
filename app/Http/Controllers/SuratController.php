@@ -12,7 +12,7 @@ class SuratController extends Controller
      */
     public function index()
     {
-        $surats = Surat::all();
+        $surats = Surat::with('user')->orderBy('tanggal_surat', 'desc')->paginate(5);
         return view('surat.surat', compact('surats'));
     }
 
@@ -53,15 +53,6 @@ class SuratController extends Controller
     }
 
     /**
-     * Tampilkan satu data surat berdasarkan ID.
-     */
-    public function show($id)
-    {
-        $surat = Surat::findOrFail($id);
-        return view('surat.show', compact('surat'));
-    }
-
-    /**
      * Update data surat di database.
      */
     public function update(Request $request, $id)
@@ -95,7 +86,7 @@ class SuratController extends Controller
             'user_id',
         ]));
 
-        return redirect()->route('surat.surat')->with('success', 'Surat berhasil diperbarui!');
+        return redirect()->route('surat.surat')->with('updated', 'Surat berhasil diperbarui!');
     }
 
     /**
@@ -106,6 +97,6 @@ class SuratController extends Controller
         $surat = Surat::findOrFail($id);
         $surat->delete();
 
-        return redirect()->route('surat.surat')->with('success', 'Surat berhasil dihapus!');
+        return redirect()->route('surat.surat')->with('deleted', 'Surat berhasil dihapus!');
     }
 }

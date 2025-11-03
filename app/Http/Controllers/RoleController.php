@@ -12,7 +12,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $roles = Role::all();
+        $roles = Role::orderBy('id', 'desc')->paginate(5);
         return view('role.role', compact('roles'));
     }
 
@@ -51,7 +51,7 @@ class RoleController extends Controller
         $role = Role::findOrFail($id);
         $role->update($request->only(['nama_role']));
 
-        return redirect()->route('role.role')->with('success', 'Role berhasil diperbarui!');
+        return redirect()->route('role.role')->with('updated', 'Role berhasil diperbarui!');
     }
 
     /**
@@ -62,6 +62,6 @@ class RoleController extends Controller
         $role = Role::findOrFail($id);
         $role->delete();
 
-        return redirect()->route('role.role')->with('success', 'Role berhasil dihapus!');
+        return redirect()->route('role.role')->with('deleted', 'Role berhasil dihapus!');
     }
 }

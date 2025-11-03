@@ -14,8 +14,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::with('role')->get();
-        $roles = Role::all();
+        $users = User::with('role')->orderBy('id', 'desc')->paginate(5);
+        $roles = Role::orderBy('nama_role')->get();
         return view('user.user', compact('users', 'roles'));
     }
 
@@ -70,7 +70,7 @@ class UserController extends Controller
 
         $user->update($data);
 
-        return redirect()->route('user.user')->with('success', 'User berhasil diperbarui!');
+        return redirect()->route('user.user')->with('updated', 'User berhasil diperbarui!');
     }
 
     /**
@@ -81,6 +81,6 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $user->delete();
 
-        return redirect()->route('user.user')->with('success', 'User berhasil dihapus!');
+        return redirect()->route('user.user')->with('deleted', 'User berhasil dihapus!');
     }
 }

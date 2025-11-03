@@ -12,7 +12,7 @@ class LayananController extends Controller
      */
     public function index()
     {
-        $layanans = Layanan::all();
+        $layanans = Layanan::orderBy('id', 'desc')->paginate(10);
         return view('layanan.layanan', compact('layanans'));
     }
 
@@ -53,7 +53,7 @@ class LayananController extends Controller
         $layanan = Layanan::findOrFail($id);
         $layanan->update($request->only(['nama_layanan', 'deskripsi']));
 
-        return redirect()->route('layanan.layanan')->with('success', 'Layanan berhasil diperbarui!');
+        return redirect()->route('layanan.layanan')->with('updated', 'Layanan berhasil diperbarui!');
     }
 
     /**
@@ -64,6 +64,6 @@ class LayananController extends Controller
         $layanan = Layanan::findOrFail($id);
         $layanan->delete();
 
-        return redirect()->route('layanan.layanan')->with('success', 'Layanan berhasil dihapus!');
+        return redirect()->route('layanan.layanan')->with('deleted', 'Layanan berhasil dihapus!');
     }
 }

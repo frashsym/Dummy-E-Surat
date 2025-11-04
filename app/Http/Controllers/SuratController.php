@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Surat;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SuratController extends Controller
 {
@@ -85,6 +86,12 @@ class SuratController extends Controller
             'status',
             'user_id',
         ]));
+
+        if (Auth::User()->role->nama_role === 'Dosen' || Auth::user()->role->nama_role === 'Mahasiswa') {
+            if ($surat->user_id !== Auth::id()) {
+                abort(403, 'Anda hanya bisa mengedit surat yang Anda buat sendiri.');
+            }
+        }
 
         return redirect()->route('surat.surat')->with('updated', 'Surat berhasil diperbarui!');
     }

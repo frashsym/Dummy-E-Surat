@@ -13,16 +13,14 @@ return new class extends Migration {
         Schema::create('surats', function (Blueprint $table) {
             $table->id();
             $table->string('nomor_surat')->unique(); // No surat resmi
-            $table->string('jenis_surat'); // contoh: "Surat Masuk", "Surat Keluar", "Surat Keterangan"
-            $table->string('perihal')->nullable(); // Judul atau topik surat
+            $table->string('jenis'); // contoh: "Surat Masuk", "Surat Keluar", "Surat Keterangan"
+            $table->string('tujuan')->nullable(); // Judul atau topik surat
             $table->date('tanggal_surat')->nullable(); // Tanggal yang tercantum di surat
             $table->date('tanggal_diterima')->nullable(); // untuk surat masuk
-            $table->string('pengirim')->nullable(); // bisa nama instansi/pihak pengirim
-            $table->string('penerima')->nullable(); // untuk surat keluar
-            $table->text('isi_singkat')->nullable(); // ringkasan isi surat
+            $table->foreignId('pengirim')->nullable()->constrained('users')->nullOnDelete(); // penerima surat (prodi)
+            $table->foreignId('penerima')->nullable()->constrained('users')->nullOnDelete(); // pembuat surat (dosen, mahasiswa)
+            $table->text('isi')->nullable(); // ringkasan isi surat
             $table->string('lampiran')->nullable(); // path ke file PDF/DOC surat
-            $table->enum('status', ['draft', 'terkirim', 'diterima', 'arsip'])->default('draft');
-            $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete(); // pembuat surat
             $table->timestamps();
             $table->softDeletes();
         });

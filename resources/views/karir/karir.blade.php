@@ -45,46 +45,50 @@
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                         Deskripsi</th>
+                                    @admin
                                     <th
                                         class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                         Aksi</th>
+                                    @endadmin
                                 </tr>
                             </thead>
                             <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                                 @forelse($karirs as $karir)
-                                    <tr>
-                                        <td class="px-6 py-4 text-sm">{{ $loop->iteration }}</td>
-                                        <td class="px-6 py-4 text-sm">{{ $karir->nama_karir }}</td>
-                                        <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-300">
-                                            {{ $karir->deskripsi }}
-                                        </td>
-                                        <td class="px-6 py-4 text-right space-x-2">
-                                            <button onclick="openModal({{ $karir }})"
-                                                class="px-3 py-1 bg-yellow-500 hover:bg-yellow-600 text-white rounded-md inline-flex items-center gap-1 transition">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20"
-                                                    fill="currentColor">
-                                                    <path
-                                                        d="M17.414 2.586a2 2 0 00-2.828 0L6 11.172V14h2.828l8.586-8.586a2 2 0 000-2.828z" />
-                                                </svg>
-                                                Edit
-                                            </button>
+                                <tr>
+                                    <td class="px-6 py-4 text-sm">{{ $loop->iteration }}</td>
+                                    <td class="px-6 py-4 text-sm">{{ $karir->nama_karir }}</td>
+                                    <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-300">
+                                        {{ $karir->deskripsi }}
+                                    </td>
+                                    @admin
+                                    <td class="px-6 py-4 text-right space-x-2">
+                                        <button onclick="openModal({{ $karir }})"
+                                            class="px-3 py-1 bg-yellow-500 hover:bg-yellow-600 text-white rounded-md inline-flex items-center gap-1 transition">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20"
+                                                fill="currentColor">
+                                                <path
+                                                    d="M17.414 2.586a2 2 0 00-2.828 0L6 11.172V14h2.828l8.586-8.586a2 2 0 000-2.828z" />
+                                            </svg>
+                                            Edit
+                                        </button>
 
-                                            <button onclick="confirmDelete({{ $karir->id }})"
-                                                class="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded-md inline-flex items-center gap-1 transition">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
-                                                    viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                        d="M6 18L18 6M6 6l12 12" />
-                                                </svg>
-                                                Hapus
-                                            </button>
-                                        </td>
-                                    </tr>
+                                        <button onclick="confirmDelete({{ $karir->id }})"
+                                            class="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded-md inline-flex items-center gap-1 transition">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M6 18L18 6M6 6l12 12" />
+                                            </svg>
+                                            Hapus
+                                        </button>
+                                    </td>
+                                    @endadmin
+                                </tr>
                                 @empty
-                                    <tr>
-                                        <td colspan="4" class="text-center py-4 text-gray-500 dark:text-gray-400">Belum ada
-                                            data.</td>
-                                    </tr>
+                                <tr>
+                                    <td colspan="4" class="text-center py-4 text-gray-500 dark:text-gray-400">Belum ada
+                                        data.</td>
+                                </tr>
                                 @endforelse
                             </tbody>
                         </table>

@@ -41,11 +41,13 @@
                     </x-nav-link>
                 </div>
 
+                @admin
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('role.role')" :active="request()->routeIs('role.role')">
                         {{ __('Role') }}
                     </x-nav-link>
                 </div>
+                @endadmin
 
             </div>
 

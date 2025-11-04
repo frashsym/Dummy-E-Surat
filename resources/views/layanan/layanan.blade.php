@@ -50,7 +50,9 @@
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">No</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Nama Layanan</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Deskripsi</th>
+                                    @admin
                                     <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Aksi</th>
+                                    @endadmin
                                 </tr>
                             </thead>
                             <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
@@ -59,6 +61,7 @@
                                         <td class="px-6 py-4 text-sm">{{ $layanans->firstItem() + $loop->index }}</td>
                                         <td class="px-6 py-4 text-sm">{{ $layanan->nama_layanan }}</td>
                                         <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-300">{{ $layanan->deskripsi }}</td>
+                                        @admin
                                         <td class="px-6 py-4 text-right space-x-2">
                                             <button onclick="openModal({{ $layanan }})"
                                                 class="px-3 py-1 bg-yellow-500 hover:bg-yellow-600 text-white rounded-md inline-flex items-center gap-1 transition">
@@ -78,6 +81,7 @@
                                                 Hapus
                                             </button>
                                         </td>
+                                        @endadmin
                                     </tr>
                                 @empty
                                     <tr>

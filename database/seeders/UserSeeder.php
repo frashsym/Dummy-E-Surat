@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
         for ($i = 1; $i <= 20; $i++) {
             $users[] = [
                 'name' => 'User ' . $i,
-                'email' => 'user' . $i . '@example.com',
+                'email' => 'user' . $i . '@gmail.com',
                 'password' => Hash::make('password123'), // default password
                 'role_id' => rand(1, 4), // role_id antara 1 sampai 4
                 'email_verified_at' => Carbon::now(),

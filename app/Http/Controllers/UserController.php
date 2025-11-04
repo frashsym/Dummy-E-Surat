@@ -14,8 +14,13 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::with('role')->orderBy('id', 'desc')->paginate(5);
+        $users = User::with('role')
+            ->where('role_id', '!=', 4) // 🔥 ngecualiin user dengan ID 4
+            ->orderBy('id', 'desc')
+            ->paginate(5);
+
         $roles = Role::orderBy('nama_role')->get();
+
         return view('user.user', compact('users', 'roles'));
     }
 

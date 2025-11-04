@@ -47,11 +47,21 @@
                         <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                             <thead class="bg-gray-50 dark:bg-gray-700">
                                 <tr>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">No</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">Nomor Surat</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">Perihal</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">Tanggal Surat</th>
-                                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">Aksi</th>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">
+                                        No</th>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">
+                                        Nomor Surat</th>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">
+                                        Perihal</th>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">
+                                        Tanggal Surat</th>
+                                    <th
+                                        class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">
+                                        Aksi</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
@@ -64,8 +74,10 @@
                                         <td class="px-6 py-4 text-right space-x-2">
                                             <button onclick="openModal({{ $surat }})"
                                                 class="px-3 py-1 bg-yellow-500 hover:bg-yellow-600 text-white rounded-md inline-flex items-center gap-1 transition">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                                                    <path d="M17.414 2.586a2 2 0 00-2.828 0L6 11.172V14h2.828l8.586-8.586a2 2 0 000-2.828z" />
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20"
+                                                    fill="currentColor">
+                                                    <path
+                                                        d="M17.414 2.586a2 2 0 00-2.828 0L6 11.172V14h2.828l8.586-8.586a2 2 0 000-2.828z" />
                                                 </svg>
                                                 Edit
                                             </button>
@@ -83,7 +95,8 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="5" class="text-center py-4 text-gray-500 dark:text-gray-400">Belum ada data surat.</td>
+                                        <td colspan="5" class="text-center py-4 text-gray-500 dark:text-gray-400">Belum ada
+                                            data surat.</td>
                                     </tr>
                                 @endforelse
                             </tbody>
@@ -105,7 +118,8 @@
         <div id="suratModalContent"
             class="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-full max-w-2xl p-6 transform scale-95 opacity-0 transition-all duration-300">
             <div class="border-b pb-2 mb-4 text-center">
-                <h2 id="modalTitle" class="text-xl font-bold uppercase text-gray-800 dark:text-gray-100">Surat Resmi</h2>
+                <h2 id="modalTitle" class="text-xl font-bold uppercase text-gray-800 dark:text-gray-100">Surat Resmi
+                </h2>
                 <p class="text-sm text-gray-500 dark:text-gray-400">Formulir Pembuatan / Perubahan Surat</p>
             </div>
 

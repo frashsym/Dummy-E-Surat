@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Surat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,11 +12,19 @@ class SuratController extends Controller
     /**
      * Tampilkan semua data surat.
      */
+
     public function index()
     {
-        $surats = Surat::with('user')->orderBy('tanggal_surat', 'desc')->paginate(5);
-        return view('surat.surat', compact('surats'));
+        $surats = Surat::with(['pengirimUser', 'penerimaUser'])
+            ->orderBy('tanggal_surat', 'desc')
+            ->paginate(5);
+
+        // ambil user untuk dropdown pengirim/penerima di modal
+        $users = User::select('id', 'name')->orderBy('name')->get();
+
+        return view('surat.surat', compact('surats', 'users'));
     }
+
 
     /**
      * Simpan data surat baru ke database.

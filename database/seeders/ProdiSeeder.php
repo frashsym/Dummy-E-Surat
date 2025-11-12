@@ -4,18 +4,15 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-use App\Models\User;
+use App\Models\Prodi;
 
-class UserSeeder extends Seeder
+class ProdiSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        User::create([
-            'nama' => 'Superadmin',
-            'email' => 'admin@gmail.com',
+        Prodi::create([
+            'nama' => 'Ketua Prodi Informatika',
+            'email' => 'prodi@gmail.com',
             'password' => Hash::make('password'),
         ]);
     }

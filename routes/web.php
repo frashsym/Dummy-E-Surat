@@ -11,17 +11,17 @@ use App\Http\Controllers\SuratController;
 use App\Http\Controllers\UserController;
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 // Route::get('/dashboard', function () {
 //     return view('dashboard');
 // })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/', [IndexController::class, 'index'])->name('index');
 Route::middleware(['auth', 'verified'])->group(function () {
 
-    Route::get('/index', [IndexController::class, 'index'])->name('index');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // ================== ADMIN AREA ==================

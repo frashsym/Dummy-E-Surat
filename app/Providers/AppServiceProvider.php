@@ -23,7 +23,14 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Blade::if('admin', function () {
-            return in_array(optional(Auth::user()->role)->nama_role, ['Pimpinan', 'Prodi']);
+            $user = Auth::user();
+
+            // Cek dulu apakah user login dan punya relasi role
+            if ($user && $user->role) {
+                return in_array($user->role->nama_role, ['Pimpinan', 'Prodi']);
+            }
+
+            return false; // kalau belum login, otomatis bukan admin
         });
     }
 

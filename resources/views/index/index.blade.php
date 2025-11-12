@@ -1,121 +1,96 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<x-app-layout>
 
-    <!-- Bootstrap Offline -->
-    <link rel="stylesheet" href="{{ asset('assets/bootstrap/css/bootstrap.min.css') }}">
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-8">
 
-    <!-- Custom Style -->
-    <style>
-        body {
-            background-color: #f8fafc;
-            font-family: 'Poppins', sans-serif;
-        }
-        .navbar {
-            background: linear-gradient(90deg, #4f46e5, #9333ea);
-        }
-        .navbar-brand, .nav-link {
-            color: #fff !important;
-            font-weight: 500;
-        }
-        .hero-section {
-            margin-top: 2rem;
-        }
-        .card-service {
-            border: none;
-            border-radius: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            transition: transform .2s ease;
-        }
-        .card-service:hover {
-            transform: translateY(-5px);
-        }
-        footer {
-            background: #facc15;
-            padding: 20px 0;
-            color: #000;
-            font-weight: 500;
-        }
-    </style>
-</head>
-<body>
+            {{-- 🔹 Image Slider --}}
+            <div class="relative overflow-hidden rounded-2xl shadow-lg max-w-5xl mx-auto">
+                <div id="slider" class="flex transition-transform duration-1000 ease-in-out">
+                    <img src="{{ asset('assets/img/home.jpg') }}" class="w-full h-[400px] object-cover flex-shrink-0"
+                        alt="Slide 1">
+                    <img src="{{ asset('assets/img/home.jpg') }}" class="w-full h-[400px] object-cover flex-shrink-0"
+                        alt="Slide 2">
+                    <img src="{{ asset('assets/img/home.jpg') }}" class="w-full h-[400px] object-cover flex-shrink-0"
+                        alt="Slide 3">
+                </div>
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg">
-        <div class="container">
-            <a class="navbar-brand d-flex align-items-center" href="#">
-                <img src="{{ asset('assets/images/logo.png') }}" alt="Logo" height="50" class="me-2">
-                <span>Fakultas Ekonomi dan Bisnis<br>Universitas Swadaya Gunung Jati</span>
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item"><a href="#home" class="nav-link">Home</a></li>
-                    <li class="nav-item"><a href="#layanan" class="nav-link">Layanan</a></li>
-                </ul>
+                {{-- Tombol navigasi slider --}}
+                <button onclick="prevSlide()"
+                    class="absolute left-3 top-1/2 -translate-y-1/2 bg-gray-800 bg-opacity-50 text-white px-3 py-2 rounded-full hover:bg-opacity-80">
+                    ‹
+                </button>
+                <button onclick="nextSlide()"
+                    class="absolute right-3 top-1/2 -translate-y-1/2 bg-gray-800 bg-opacity-50 text-white px-3 py-2 rounded-full hover:bg-opacity-80">
+                    ›
+                </button>
             </div>
-        </div>
-    </nav>
 
-    <!-- Hero / Slider -->
-    <section id="home" class="hero-section container mt-4">
-        <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-inner rounded-4 shadow">
-                <div class="carousel-item active">
-                    <img src="{{ asset('assets/img/home.jpg') }}" class="d-block w-100" alt="Slide 1">
-                </div>
-                <div class="carousel-item">
-                    <img src="{{ asset('assets/img/home.jpg') }}" class="d-block w-100" alt="Slide 2">
-                </div>
-                <div class="carousel-item">
-                    <img src="{{ asset('assets/img/home.jpg') }}" class="d-block w-100" alt="Slide 3">
-                </div>
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon"></span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon"></span>
-            </button>
-        </div>
-    </section>
+            {{-- 🔹 Section Layanan --}}
+            <section id="layanan" class="py-12">
+                <h3 class="text-center text-2xl font-bold text-gray-800 dark:text-gray-200">Layanan</h3>
+                {{-- isi konten layanan lo di sini --}}
+            </section>
 
-    <!-- Layanan -->
-    <section id="layanan" class="container text-center mt-5 mb-5">
-        <h2 class="fw-bold mb-4">Layanan</h2>
-        <div class="row justify-content-center g-4">
-            <div class="col-md-3">
-                <div class="card card-service py-4">
-                    <img src="{{ asset('assets/images/mail.png') }}" alt="E-Surat" class="mx-auto mb-3" width="70">
-                    <h5 class="fw-semibold">E-Surat</h5>
+            {{-- 🔹 3 Kartu Layanan --}}
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {{-- E-Surat --}}
+                <div
+                    class="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 flex flex-col items-center text-center hover:shadow-lg transition">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3176/3176363.png" alt="E-Surat"
+                        class="h-16 w-16 mb-3">
+                    <h4 class="text-lg font-semibold text-gray-800 dark:text-gray-200">E-Surat</h4>
+                    <p class="text-gray-500 dark:text-gray-400 text-sm mt-2">Layanan untuk pengelolaan surat masuk dan
+                        keluar secara elektronik.</p>
+                    <a href="{{ route('surat.surat') }}"
+                        class="mt-4 inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-semibold">Buka</a>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card card-service py-4">
-                    <img src="{{ asset('assets/images/star.png') }}" alt="Penilaian Kinerja" class="mx-auto mb-3" width="70">
-                    <h5 class="fw-semibold">Penilaian Kinerja</h5>
+
+                {{-- Penilaian Kinerja --}}
+                <div
+                    class="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 flex flex-col items-center text-center hover:shadow-lg transition">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3135/3135768.png" alt="Penilaian Kinerja"
+                        class="h-16 w-16 mb-3">
+                    <h4 class="text-lg font-semibold text-gray-800 dark:text-gray-200">Penilaian Kinerja</h4>
+                    <p class="text-gray-500 dark:text-gray-400 text-sm mt-2">Layanan untuk melakukan penilaian terhadap
+                        kinerja pegawai.</p>
+                    {{-- <a href="{{ route('kinerja.index') }}"
+                        class="mt-4 inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-semibold">Buka</a>
+                    --}}
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card card-service py-4">
-                    <img src="{{ asset('assets/images/team.png') }}" alt="Layanan Karir" class="mx-auto mb-3" width="70">
-                    <h5 class="fw-semibold">Layanan Karir</h5>
+
+                {{-- Layanan Karir --}}
+                <div
+                    class="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 flex flex-col items-center text-center hover:shadow-lg transition">
+                    <img src="https://cdn-icons-png.flaticon.com/512/9128/9128955.png" alt="Layanan Karir"
+                        class="h-16 w-16 mb-3">
+                    <h4 class="text-lg font-semibold text-gray-800 dark:text-gray-200">Layanan Karir</h4>
+                    <p class="text-gray-500 dark:text-gray-400 text-sm mt-2">Layanan untuk informasi dan pengembangan
+                        karir karyawan.</p>
+                    {{-- <a href="{{ route('karir.karir') }}"
+                        class="mt-4 inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-semibold">Buka</a>
+                    --}}
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- Footer -->
-    <footer class="text-center">
-        <img src="{{ asset('assets/images/logo.png') }}" alt="Logo" height="50">
-        <p class="mt-2 mb-0">Fakultas Ekonomi dan Bisnis - Universitas Swadaya Gunung Jati</p>
-    </footer>
+    {{-- 🔹 Script Slider --}}
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('#slider img');
 
-    <!-- Bootstrap JS Offline -->
-    <script src="{{ asset('assets/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-</body>
-</html>
+        function showSlide(index) {
+            const total = slides.length;
+            if (index >= total) currentSlide = 0;
+            else if (index < 0) currentSlide = total - 1;
+            else currentSlide = index;
+            document.getElementById('slider').style.transform = `translateX(-${currentSlide * 100}%)`;
+        }
+
+        function nextSlide() { showSlide(currentSlide + 1); }
+        function prevSlide() { showSlide(currentSlide - 1); }
+
+        // Auto-slide setiap 5 detik
+        setInterval(() => nextSlide(), 5000);
+    </script>
+</x-app-layout>

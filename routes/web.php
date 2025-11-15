@@ -2,9 +2,9 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\SuratController;
+use App\Http\Controllers\TemplateSuratController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 
@@ -41,18 +41,27 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // ================== USER AREA ==================
     Route::prefix('user')->middleware('role:user')->group(function () {
 
-        // User hanya read data
+        // User hanya bisa melihat daftar user
         Route::get('/', [UserController::class, 'index'])->name('user.index');
         Route::get('/detail/{user}', [UserController::class, 'show'])->name('user.show');
 
-        // Surat (CRUD untuk user)
+        // Halaman daftar template surat (card)
         Route::prefix('surat')->group(function () {
-            Route::get('/', [SuratController::class, 'index'])->name('user.surat.index');
-            Route::post('/', [SuratController::class, 'store'])->name('user.surat.store');
-            Route::get('/{surat}', [SuratController::class, 'show'])->name('user.surat.show');
-            Route::put('/{surat}', [SuratController::class, 'update'])->name('user.surat.update');
+
+            // tampilkan semua template surat untuk user
+            Route::get('/', [TemplateSuratController::class, 'index'])->name('user.surat.index');
+
+            // user melihat detail template surat + mengisi field editable
+            Route::get('/{template}', [TemplateSuratController::class, 'show'])->name('user.surat.show');
+
+            // user menyimpan surat yang sudah diisi
+            Route::post('/{template}', [TemplateSuratController::class, 'store'])->name('user.surat.store');
+
+            // update surat yang sudah dibuat user
+            Route::put('/{surat}', [TemplateSuratController::class, 'update'])->name('user.surat.update');
         });
     });
+
 });
 
 // PROFILE

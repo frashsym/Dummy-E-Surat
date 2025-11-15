@@ -15,15 +15,22 @@ class Surat extends Model
 
     // Kolom yang bisa diisi secara mass-assignment
     protected $fillable = [
-        'nomor_surat',
-        'jenis',
+        'nomor',            // nomor surat final
+        'perihal',          // judul surat
+        'jenis',            // opsional
+        'kepada_yth',
         'tujuan',
+
         'tanggal_surat',
         'tanggal_diterima',
+
         'pengirim',
         'penerima',
-        'isi',
-        'lampiran',
+
+        'isi_html',         // isi HTML final
+        'lampiran',         // pdf final
+
+        'status',           // draft, dikirim, ditolak, acc
     ];
 
     // Jika kamu ingin meng-cast tanggal agar otomatis jadi Carbon instance
@@ -44,6 +51,11 @@ class Surat extends Model
     public function penerimaUser()
     {
         return $this->belongsTo(User::class, 'penerima');
+    }
+
+    public function template()
+    {
+        return $this->belongsTo(TemplateSurat::class, 'template_id');
     }
 
     /**

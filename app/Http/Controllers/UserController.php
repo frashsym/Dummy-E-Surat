@@ -45,7 +45,7 @@ class UserController extends Controller
             'role_id' => $request->role_id,
         ]);
 
-        return redirect()->route('user.user')->with('success', 'User berhasil ditambahkan!');
+        return redirect()->route('user.index')->with('success', 'User berhasil ditambahkan!');
     }
 
     /**
@@ -77,7 +77,7 @@ class UserController extends Controller
 
         $user->update($data);
 
-        return redirect()->route('user.user')->with('updated', 'User berhasil diperbarui!');
+        return redirect()->route('user.index')->with('updated', 'User berhasil diperbarui!');
     }
 
     /**
@@ -88,6 +88,6 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $user->delete();
 
-        return redirect()->route('user.user')->with('deleted', 'User berhasil dihapus!');
+        return redirect()->route('user.index')->with('deleted', 'User berhasil dihapus!');
     }
 }

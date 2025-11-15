@@ -4,35 +4,38 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
+class CreateSuratsTable extends Migration
+{
+    public function up()
     {
         Schema::create('surats', function (Blueprint $table) {
             $table->id();
-            $table->string('nomor')->unique(); // No surat resmi
-            $table->string('lampiran')->nullable(); // path ke file PDF/DOC surat
-            $table->string('perihal'); // subjek surat
-            $table->string('kepada_yth'); // penerima surat
-            $table->string('jenis'); // contoh: "Surat Masuk", "Surat Keluar", "Surat Keterangan"
-            $table->string('tujuan')->nullable(); // Judul atau topik surat
-            $table->date('tanggal_surat')->nullable(); // Tanggal yang tercantum di surat
-            $table->date('tanggal_diterima')->nullable(); // untuk surat masuk
-            $table->foreignId('pengirim')->nullable()->constrained('users')->nullOnDelete(); // penerima surat (prodi)
-            $table->foreignId('penerima')->nullable()->constrained('users')->nullOnDelete(); // pembuat surat (dosen, mahasiswa)
-            $table->text('isi')->nullable(); // ringkasan isi surat
-            $table->timestamps();
+
+            $table->string('nomor')->nullable()->unique(); // nomor surat final
+            $table->string('perihal'); // judul surat
+            $table->string('jenis')->nullable(); // opsional
+            $table->string('kepada_yth')->nullable();
+            $table->string('tujuan')->nullable();
+
+            $table->date('tanggal_surat')->nullable();
+            $table->date('tanggal_diterima')->nullable();
+
+            // relasi user
+            $table->foreignId('pengirim')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('penerima')->nullable()->constrained('users')->nullOnDelete();
+
+            $table->longText('isi_html')->nullable(); // hasil HTML final
+            $table->string('lampiran')->nullable(); // pdf final
+
+            $table->string('status')->default('draft'); // draft, dikirim, ditolak, acc
+
             $table->softDeletes();
+            $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    public function down()
     {
-        Schema::dropIfExists('surat');
+        Schema::dropIfExists('surats');
     }
-};
+}

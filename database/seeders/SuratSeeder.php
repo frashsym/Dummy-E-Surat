@@ -4,54 +4,67 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
 
 class SuratSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
+    public function run()
     {
         DB::table('surats')->insert([
             [
-                'nomor_surat' => '001/SM/XI/2025',
-                'jenis' => 'Surat Masuk',
-                'tujuan' => 'Kerjasama Penelitian',
-                'tanggal_surat' => '2025-10-30',
-                'tanggal_diterima' => '2025-10-31',
-                'pengirim' => 3, // User ID 3
-                'penerima' => 2, // User ID 2 (Prodi)
-                'isi' => 'Permohonan kerjasama penelitian antara PT Sinar Jaya dan universitas.',
-                'lampiran' => 'dokumen/kerjasama_penelitian.pdf',
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
+                'template_id' => 1,
+                'nomor' => '001/FTI/2025',
+                'perihal' => 'Permohonan Penelitian Sistem Informasi',
+                'jenis' => 'Surat Permohonan',
+                'kepada_yth' => 'Kaprodi Sistem Informasi',
+                'tujuan' => 'Penelitian Kampus',
+                'tanggal_surat' => '2025-01-01',
+                'isi_html' => '<p>Isi permohonan penelitian...</p>',
+                'pengirim' => 2,
+                'penerima' => 1,
+                'status' => 'acc',
+                'created_at' => now()
             ],
             [
-                'nomor_surat' => '002/SK/XI/2025',
-                'jenis' => 'Surat Keluar',
-                'tujuan' => 'Permohonan Magang',
-                'tanggal_surat' => '2025-11-01',
-                'tanggal_diterima' => null,
-                'pengirim' => 4, // User ID 4
-                'penerima' => 2, // User ID 2 (Prodi)
-                'isi' => 'Surat pengantar permohonan magang mahasiswa ke perusahaan mitra.',
-                'lampiran' => 'dokumen/permohonan_magang.pdf',
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ],
-            [
-                'nomor_surat' => '003/SK/XI/2025',
+                'template_id' => 2,
+                'nomor' => '002/FTI/2025',
+                'perihal' => 'Keterangan Aktif Kuliah',
                 'jenis' => 'Surat Keterangan',
-                'tujuan' => 'Keterangan Aktif Kuliah',
-                'tanggal_surat' => '2025-11-02',
-                'tanggal_diterima' => null,
-                'pengirim' => 3, // User ID 3
-                'penerima' => 2, // User ID 2 (Prodi)
-                'isi' => 'Surat keterangan mahasiswa aktif untuk keperluan administrasi.',
-                'lampiran' => 'dokumen/surat_keterangan_aktif.pdf',
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
+                'kepada_yth' => 'Bagian Akademik',
+                'tujuan' => 'Beasiswa',
+                'tanggal_surat' => '2025-01-05',
+                'isi_html' => '<p>Mahasiswa aktif pada semester...</p>',
+                'pengirim' => 3,
+                'penerima' => 1,
+                'status' => 'pending',
+                'created_at' => now()
+            ],
+            [
+                'template_id' => 3,
+                'nomor' => '003/FTI/2025',
+                'perihal' => 'Pengunduran Diri dari Mata Kuliah',
+                'jenis' => 'Surat Pengunduran Diri',
+                'kepada_yth' => 'Dosen Pengampu',
+                'tujuan' => 'Penarikan Mata Kuliah',
+                'tanggal_surat' => '2025-01-10',
+                'isi_html' => '<p>Saya mengundurkan diri...</p>',
+                'pengirim' => 4,
+                'penerima' => 1,
+                'status' => 'ditolak',
+                'created_at' => now()
+            ],
+            [
+                'template_id' => 4,
+                'nomor' => '004/FTI/2025',
+                'perihal' => 'Penugasan Mengajar Semester Genap',
+                'jenis' => 'Surat Tugas Mengajar',
+                'kepada_yth' => 'Dosen Teknologi Informasi',
+                'tujuan' => 'Mengajar Rekayasa Perangkat Lunak',
+                'tanggal_surat' => '2025-01-12',
+                'isi_html' => '<p>Dosen ditugaskan mengajar...</p>',
+                'pengirim' => 1,
+                'penerima' => 2,
+                'status' => 'draft',
+                'created_at' => now()
             ],
         ]);
     }

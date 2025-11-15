@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::table('users', function (Blueprint $table) {
             // tambah kolom role_id setelah id (opsional)
-            $table->unsignedBigInteger('role_id')->after('email')->nullable();
+            $table->foreignId('role_id')->after('email')->constrained('roles')->cascadeOnDelete();
         });
     }
 

@@ -8,55 +8,44 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RoleAccessMiddleware
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @param  string|null  $roleType  // 'admin' or 'user'
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
     public function handle(Request $request, Closure $next, $roleType = null): Response
     {
         $user = $request->user();
-
         if (!$user) {
             abort(403, 'Unauthorized');
         }
 
-        // Definisi role
-        $adminRoles = ['Pimpinan', 'Prodi'];
-        $userRoles = ['Dosen', 'Mahasiswa'];
-
+        // Ambil nama role dari relasi user->role
         $roleName = optional($user->role)->nama_role;
 
-        $isAdmin = in_array($roleName, $adminRoles, true);
-        $isUser = in_array($roleName, $userRoles, true);
+        // Role yang dianggap admin
+        $adminRoles = ['Superadmin'];
 
-        // Jika tidak diberikan parameter, biarkan lewat (atau ubah sesuai kebutuhan)
-        if (is_null($roleType)) {
+        // Role yang boleh fitur user
+        $userRoles  = ['Superadmin', 'Pimpinan', 'Prodi', 'Dosen', 'Mahasiswa'];
+
+        // Superadmin → bisa SEMUA ROUTE tanpa pengecekan lain
+        if ($roleName === 'Superadmin') {
             return $next($request);
         }
 
-        // role:user -> allow both user AND admin
-        if ($roleType === 'user') {
-            if (!($isUser || $isAdmin)) {
-                abort(403, 'Anda tidak memiliki akses user.');
-            }
-
-            return $next($request);
-        }
-
-        // role:admin -> hanya admin
+        // Kalau route ini butuh role admin
         if ($roleType === 'admin') {
-            if (!$isAdmin) {
-                abort(403, 'Anda tidak memiliki akses admin.');
+            if (!in_array($roleName, $adminRoles)) {
+                abort(403, 'Akses admin ditolak.');
             }
-
             return $next($request);
         }
 
-        // Jika diberikan roleType lain yang tidak dikenali, tolak (opsional)
-        abort(403, 'Akses ditolak.');
+        // Kalau route ini butuh role user
+        if ($roleType === 'user') {
+            if (!in_array($roleName, $userRoles)) {
+                abort(403, 'Akses user ditolak.');
+            }
+            return $next($request);
+        }
+
+        // Jika tidak ada parameter → lewati saja
+        return $next($request);
     }
 }

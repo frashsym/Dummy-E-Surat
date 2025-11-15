@@ -15,16 +15,31 @@ class SuratController extends Controller
 
     public function index()
     {
-        $surats = Surat::with(['pengirimUser', 'penerimaUser'])
-            ->orderBy('tanggal_surat', 'desc')
-            ->paginate(5);
+        $user = Auth::user();
 
-        // ambil user untuk dropdown pengirim/penerima di modal
-        $users = User::select('id', 'name')->orderBy('name')->get();
+        // SUPERADMIN → full akses
+        if ($user->role->nama_role === 'Superadmin') {
+            $surats = Surat::with(['pengirimUser', 'penerimaUser'])
+                ->orderBy('tanggal_surat', 'desc')
+                ->paginate(5);
+        } else {
+            // USER BIASA → hanya surat miliknya
+            $surats = Surat::with(['pengirimUser', 'penerimaUser'])
+                ->where('pengirim_id', $user->id)
+                ->orWhere('penerima_id', $user->id)
+                ->orderBy('tanggal_surat', 'desc')
+                ->paginate(5);
+        }
+
+        // List user untuk dropdown (SUPERADMIN boleh semua, user lain hanya dirinya sendiri)
+        if ($user->role->nama_role === 'Superadmin') {
+            $users = User::select('id', 'name')->orderBy('name')->get();
+        } else {
+            $users = User::where('id', $user->id)->select('id', 'name')->get();
+        }
 
         return view('surat.surat', compact('surats', 'users'));
     }
-
 
     /**
      * Simpan data surat baru ke database.

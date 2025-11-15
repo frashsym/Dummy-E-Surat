@@ -18,7 +18,7 @@
                 </div>
 
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('user.user')" :active="request()->routeIs('user.user')">
+                    <x-nav-link :href="route('user.index')" :active="request()->routeIs('user.user')">
                         {{ __('Staff') }}
                     </x-nav-link>
                 </div>
@@ -28,18 +28,6 @@
                         {{ __('Layanan') }}
                     </x-nav-link>
                 </div>
-
-                {{-- <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('karir.karir')" :active="request()->routeIs('karir.karir')">
-                        {{ __('Karir') }}
-                    </x-nav-link>
-                </div> --}}
-
-                {{-- <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('surat.surat')" :active="request()->routeIs('surat.surat')">
-                        {{ __('Surat') }}
-                    </x-nav-link>
-                </div> --}}
 
             </div>
 

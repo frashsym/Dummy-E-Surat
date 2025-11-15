@@ -68,7 +68,7 @@
                                 @forelse($surats as $surat)
                                     <tr>
                                         <td class="px-6 py-4 text-sm">{{ $surats->firstItem() + $loop->index }}</td>
-                                        <td class="px-6 py-4 text-sm">{{ $surat->nomor_surat }}</td>
+                                        <td class="px-6 py-4 text-sm">{{ $surat->nomor }}</td>
                                         <td class="px-6 py-4 text-sm">{{ $surat->perihal }}</td>
                                         <td class="px-6 py-4 text-sm">{{ $surat->tanggal_surat->format('d M Y') }}</td>
                                         <td class="px-6 py-4 text-right space-x-2">
@@ -219,7 +219,7 @@
                 document.getElementById('isi_singkat').value = surat.isi_singkat || '';
             } else {
                 modalTitle.textContent = 'Tambah Surat';
-                suratForm.action = `{{ route('surat.store') }}`;
+                suratForm.action = `{{ route('user.surat.store') }}`;
                 formMethod.value = 'POST';
                 suratForm.reset();
             }

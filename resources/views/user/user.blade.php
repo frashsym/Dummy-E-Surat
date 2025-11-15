@@ -59,11 +59,11 @@
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">
                                         Posisi</th>
-                                    @admin
+                                    @superadmin
                                     <th
                                         class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">
                                         Aksi</th>
-                                    @endadmin
+                                    @endsuperadmin
                                 </tr>
                             </thead>
                             <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
@@ -73,7 +73,7 @@
                                     <td class="px-6 py-4 text-sm">{{ $user->name }}</td>
                                     <td class="px-6 py-4 text-sm">{{ $user->email }}</td>
                                     <td class="px-6 py-4 text-sm">{{ $user->role->nama_role ?? '-' }}</td>
-                                    @admin
+                                    @superadmin
                                     <td class="px-6 py-4 text-right space-x-2">
                                         <button onclick="openModal({{ $user }})"
                                             class="px-3 py-1 bg-yellow-500 hover:bg-yellow-600 text-white rounded-md inline-flex items-center gap-1 transition">
@@ -95,7 +95,7 @@
                                             Hapus
                                         </button>
                                     </td>
-                                    @endadmin
+                                    @endsuperadmin
                                 </tr>
                                 @empty
                                 <tr>
@@ -211,7 +211,7 @@
                 roleSelect.value = user.role_id ?? '';
             } else {
                 modalTitle.textContent = 'Tambah User';
-                userForm.action = `{{ route('user.store') }}`;
+                userForm.action = `{{ route('admin.user.store') }}`;
                 formMethod.value = 'POST';
                 nameInput.value = '';
                 emailInput.value = '';

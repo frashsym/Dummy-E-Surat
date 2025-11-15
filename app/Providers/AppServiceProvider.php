@@ -20,17 +20,11 @@ class AppServiceProvider extends ServiceProvider
      * Bootstrap any application services.
      */
 
-    public function boot(): void
+
+    public function boot()
     {
-        Blade::if('admin', function () {
-            $user = Auth::user();
-
-            // Cek dulu apakah user login dan punya relasi role
-            if ($user && $user->role) {
-                return in_array($user->role->nama_role, ['Pimpinan', 'Prodi']);
-            }
-
-            return false; // kalau belum login, otomatis bukan admin
+        Blade::if('superadmin', function () {
+            return Auth::check() && Auth::user()->role->nama_role === 'Superadmin';
         });
     }
 

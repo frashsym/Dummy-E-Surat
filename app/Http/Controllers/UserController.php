@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -14,11 +15,12 @@ class UserController extends Controller
      */
     public function index()
     {
+        $user = Auth::user();
         $users = User::with('role')
-            ->where('role_id', '!=', 4) // 🔥 ngecualiin user dengan ID 4
+            ->where('role_id', '!=', 5)  // Mahasiswa tidak ditampilkan
             ->orderBy('id', 'desc')
             ->paginate(5);
-
+        // Role tetap diambil (hanya superadmin yang butuh)
         $roles = Role::orderBy('nama_role')->get();
 
         return view('user.user', compact('users', 'roles'));

@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::table('surats', function (Blueprint $table) {
             // relasi ke template surat
-            $table->foreignId('template_id')->constrained('template_surats')->cascadeOnDelete();
+            $table->foreignId('template_id')->after('id')->constrained('template_surats')->cascadeOnDelete();
         });
     }
 

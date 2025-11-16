@@ -13,36 +13,48 @@ class Surat extends Model
     // Nama tabel (opsional, sesuai konvensi Laravel)
     protected $table = 'surats';
 
-    // Kolom yang bisa diisi secara mass-assignment
+    use SoftDeletes;
+
     protected $fillable = [
-        'nomor',            // nomor surat final
-        'perihal',          // judul surat
-        'jenis',            // opsional
+        'template_id',
+        'header_logo',
+        'header_info',
+
+        'nomor',
+        'perihal',
+        'jenis',
         'kepada_yth',
         'tujuan',
-
         'tanggal_surat',
         'tanggal_diterima',
+
+        // mahasiswa manual
+        'mhs_nama',
+        'mhs_npm',
+        'mhs_tingkat',
+        'mhs_semester',
+        'mhs_konsentrasi',
+        'mhs_nohp',
+
+        // penandatangan manual
+        'penandatangan_jabatan',
+        'penandatangan_nama',
+        'penandatangan_signature',
 
         'pengirim',
         'penerima',
 
-        'isi_html',         // isi HTML final
-        'lampiran',         // pdf final
-
-        'status',           // draft, dikirim, ditolak, acc
+        'isi_html',
+        'lampiran',
+        'status',
     ];
 
-    // Jika kamu ingin meng-cast tanggal agar otomatis jadi Carbon instance
     protected $casts = [
+        'header_info' => 'array',
         'tanggal_surat' => 'date',
         'tanggal_diterima' => 'date',
     ];
 
-    /**
-     * Relasi ke model User (pembuat surat)
-     */
-    // Relasi ke User
     public function pengirimUser()
     {
         return $this->belongsTo(User::class, 'pengirim');

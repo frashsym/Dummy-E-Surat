@@ -44,37 +44,52 @@ class SuratController extends Controller
     /**
      * Simpan data surat baru ke database.
      */
-    public function store(Request $request)
+    public function store(Request $request, $templateId)
     {
         $request->validate([
-            'nomor_surat' => 'required|string|max:255',
-            'jenis_surat' => 'required|string|max:100',
-            'perihal' => 'required|string|max:255',
-            'tanggal_surat' => 'required|date',
+            'header_logo' => 'nullable|string|max:255',
+            'header_info' => 'nullable|string',
+
+            'nomor' => 'nullable|string|max:255',
+            'perihal' => 'nullable|string|max:255',
+            'jenis' => 'nullable|string|max:100',
+
+            'kepada_yth' => 'nullable|string|max:255',
+            'tujuan' => 'nullable|string|max:255',
+
+            'tanggal_surat' => 'nullable|date',
             'tanggal_diterima' => 'nullable|date',
+
             'pengirim' => 'nullable|string|max:255',
             'penerima' => 'nullable|string|max:255',
-            'isi_singkat' => 'nullable|string',
+
+            'isi_html' => 'required|string',
+
             'lampiran' => 'nullable|string|max:255',
+
             'status' => 'nullable|string|max:50',
-            'user_id' => 'nullable|integer|exists:users,id',
         ]);
 
-        Surat::create($request->only([
-            'nomor_surat',
-            'jenis_surat',
-            'perihal',
-            'tanggal_surat',
-            'tanggal_diterima',
-            'pengirim',
-            'penerima',
-            'isi_singkat',
-            'lampiran',
-            'status',
-            'user_id',
-        ]));
+        Surat::create([
+            'template_id' => $templateId, // simpan id template
+            'header_logo' => $request->header_logo,
+            'header_info' => $request->header_info,
+            'nomor' => $request->nomor,
+            'perihal' => $request->perihal,
+            'jenis' => $request->jenis,
+            'kepada_yth' => $request->kepada_yth,
+            'tujuan' => $request->tujuan,
+            'tanggal_surat' => $request->tanggal_surat,
+            'tanggal_diterima' => $request->tanggal_diterima,
+            'pengirim' => $request->pengirim,
+            'penerima' => $request->penerima,
+            'isi_html' => $request->isi_html,
+            'lampiran' => $request->lampiran,
+            'status' => $request->status ?? 'draft',
+        ]);
 
-        return redirect()->route('surat.surat')->with('success', 'Surat berhasil ditambahkan!');
+        return redirect()->route('user.surat.index')
+            ->with('success', 'Surat berhasil ditambahkan!');
     }
 
     /**
@@ -83,7 +98,7 @@ class SuratController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'nomor_surat' => 'required|string|max:255',
+            'nomor' => 'required|string|max:255',
             'jenis_surat' => 'required|string|max:100',
             'perihal' => 'required|string|max:255',
             'tanggal_surat' => 'required|date',
@@ -98,7 +113,7 @@ class SuratController extends Controller
 
         $surat = Surat::findOrFail($id);
         $surat->update($request->only([
-            'nomor_surat',
+            'nomor',
             'jenis_surat',
             'perihal',
             'tanggal_surat',
@@ -117,7 +132,7 @@ class SuratController extends Controller
             }
         }
 
-        return redirect()->route('surat.surat')->with('updated', 'Surat berhasil diperbarui!');
+        return redirect()->route('user.surat.index')->with('updated', 'Surat berhasil diperbarui!');
     }
 
     /**
@@ -128,6 +143,6 @@ class SuratController extends Controller
         $surat = Surat::findOrFail($id);
         $surat->delete();
 
-        return redirect()->route('surat.surat')->with('deleted', 'Surat berhasil dihapus!');
+        return redirect()->route('user.surat.index')->with('deleted', 'Surat berhasil dihapus!');
     }
 }

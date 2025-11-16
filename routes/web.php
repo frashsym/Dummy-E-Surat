@@ -46,20 +46,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/detail/{user}', [UserController::class, 'show'])->name('user.show');
 
         // Halaman daftar template surat (card)
-        Route::prefix('surat')->group(function () {
+        Route::prefix('surat')->name('user.surat.')->group(function () {
 
-            // tampilkan semua template surat untuk user
-            Route::get('/', [TemplateSuratController::class, 'index'])->name('user.surat.index');
+            // LIST TEMPLATE
+            Route::get('/', [TemplateSuratController::class, 'index'])->name('index');
 
-            // user melihat detail template surat + mengisi field editable
-            Route::get('/{template}', [TemplateSuratController::class, 'show'])->name('user.surat.show');
+            // PREVIEW TEMPLATE
+            Route::get('/template/{template}', [TemplateSuratController::class, 'show'])->name('show');
 
-            // user menyimpan surat yang sudah diisi
-            Route::post('/{template}', [TemplateSuratController::class, 'store'])->name('user.surat.store');
+            // STORE SURAT BARU
+            Route::post('/template/{template}', [TemplateSuratController::class, 'store'])->name('store');
 
-            // update surat yang sudah dibuat user
-            Route::put('/{surat}', [TemplateSuratController::class, 'update'])->name('user.surat.update');
+            // UPDATE SURAT YANG SUDAH ADA
+            Route::put('/edit/{surat}', [TemplateSuratController::class, 'update'])->name('update');
         });
+
     });
 
 });

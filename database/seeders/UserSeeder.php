@@ -29,6 +29,14 @@ class UserSeeder extends Seeder
             'role_id' => 2,
         ]);
 
+        User::create([
+            'name' => 'Wakil Dekan',
+            'email' => 'wd@gmail.com',
+            'password' => Hash::make('password'),
+            'wd' => 1,
+            'role_id' => 2,
+        ]);
+
         // PRODI
         User::create([
             'name' => 'Kaprodi Informatika',
@@ -47,8 +55,12 @@ class UserSeeder extends Seeder
 
         // MAHASISWA
         User::create([
-            'name' => 'Mahasiswa Uji Coba',
+            'name' => 'Mahasiswa',
             'email' => 'mahasiswa@gmail.com',
+            'npm' => '1001',
+            'tingkat' => 'IV',
+            'semester' => 8,
+            'no_hp' => '081234567890',
             'password' => Hash::make('password'),
             'role_id' => 5,
         ]);

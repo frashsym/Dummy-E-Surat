@@ -71,7 +71,7 @@
                 <button onclick="closeTemplateModal()" class="text-gray-500 hover:text-gray-700">✕</button>
             </div>
 
-            <form id="templateForm" method="POST">
+            <form id="templateForm" method="POST" action="{{ url('/user/surat/buat/' . $template->id) }}">
                 @csrf
 
                 <input type="hidden" name="template_id" id="template_id">
@@ -318,11 +318,11 @@
 
             generateDynamicFields(fieldsToGenerate);
 
-            // Set form action (sesuaikan route mu)
-            templateForm.action = `/user/surat/template/${templateData.id}`;
+            // Set fo
 
             // show modal
             templateModal.classList.remove('hidden');
+            templateForm.action = `/user/surat/buat/${templateData.id}`;
             setTimeout(() => templateModalContent.classList.remove('scale-95', 'opacity-0'), 10);
 
             // initial preview

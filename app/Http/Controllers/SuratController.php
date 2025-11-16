@@ -38,7 +38,7 @@ class SuratController extends Controller
             $users = User::where('id', $user->id)->select('id', 'name')->get();
         }
 
-        return view('surat.surat', compact('surats', 'users'));
+        return view('surat.data', compact('surats', 'users'));
     }
 
     /**
@@ -88,7 +88,7 @@ class SuratController extends Controller
             'status' => $request->status ?? 'draft',
         ]);
 
-        return redirect()->route('user.surat.index')
+        return redirect()->route('user.template.index')
             ->with('success', 'Surat berhasil ditambahkan!');
     }
 

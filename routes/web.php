@@ -46,19 +46,28 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/detail/{user}', [UserController::class, 'show'])->name('user.show');
 
         // Halaman daftar template surat (card)
-        Route::prefix('surat')->name('user.surat.')->group(function () {
+        Route::prefix('surat/template')->name('user.template.')->group(function () {
 
             // LIST TEMPLATE
             Route::get('/', [TemplateSuratController::class, 'index'])->name('index');
 
-            // PREVIEW TEMPLATE
-            Route::get('/template/{template}', [TemplateSuratController::class, 'show'])->name('show');
+            // ADD TEMPLATE
+            Route::post('/', [TemplateSuratController::class, 'store'])->name('store');
 
-            // STORE SURAT BARU
-            Route::post('/template/{template}', [TemplateSuratController::class, 'store'])->name('store');
+            // SHOW TEMPLATE
+            Route::get('/{template}', [TemplateSuratController::class, 'show'])->name('show');
+        });
+
+        Route::prefix('surat')->name('user.surat.')->group(function () {
+
+            // LIST TEMPLATE
+            Route::get('/', [SuratController::class, 'index'])->name('index');
+
+            // FORM MENGISI TEMPLATE → BIKIN SURAT BARU
+            Route::post('/buat/{template}', [SuratController::class, 'store'])->name('store');
 
             // UPDATE SURAT YANG SUDAH ADA
-            Route::put('/edit/{surat}', [TemplateSuratController::class, 'update'])->name('update');
+            Route::put('/edit/{surat}', [SuratController::class, 'update'])->name('update');
         });
 
     });

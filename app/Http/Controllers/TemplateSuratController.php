@@ -33,17 +33,17 @@ class TemplateSuratController extends Controller
             'editable_fields' => $request->editable_fields,
         ]);
 
-        return redirect()->route('user.surat.index')->with('success', 'Template surat berhasil ditambahkan!');
+        return redirect()->route('user.template.index')->with('success', 'Template surat berhasil ditambahkan!');
     }
 
     /**
      * Tampilkan satu template berdasarkan ID.
      */
-    public function show($id)
-    {
-        $template = TemplateSurat::findOrFail($id);
-        return view('surat.surat.show', compact('template'));
-    }
+    // public function show($id)
+    // {
+    //     $template = TemplateSurat::findOrFail($id);
+    //     return view('surat.surat.show', compact('template'));
+    // }
 
     /**
      * Update data template surat.
@@ -64,7 +64,7 @@ class TemplateSuratController extends Controller
             'editable_fields' => $request->editable_fields,
         ]);
 
-        return redirect()->route('user.surat.index')->with('updated', 'Template surat berhasil diperbarui!');
+        return redirect()->route('user.template.index')->with('updated', 'Template surat berhasil diperbarui!');
     }
 
     /**
@@ -75,6 +75,6 @@ class TemplateSuratController extends Controller
         $template = TemplateSurat::findOrFail($id);
         $template->delete();
 
-        return redirect()->route('user.surat.index')->with('deleted', 'Template surat berhasil dihapus!');
+        return redirect()->route('user.template.index')->with('deleted', 'Template surat berhasil dihapus!');
     }
 }

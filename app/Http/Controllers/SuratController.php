@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Surat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\SuratBaruNotification;
 
 class SuratController extends Controller
 {
@@ -70,8 +71,9 @@ class SuratController extends Controller
             'status' => 'nullable|string|max:50',
         ]);
 
-        Surat::create([
-            'template_id' => $templateId, // simpan id template
+        // Buat surat baru
+        $surat = Surat::create([
+            'template_id' => $templateId,
             'header_logo' => $request->header_logo,
             'header_info' => $request->header_info,
             'nomor' => $request->nomor,
@@ -87,6 +89,12 @@ class SuratController extends Controller
             'lampiran' => $request->lampiran,
             'status' => $request->status ?? 'draft',
         ]);
+
+        // 🔔 Kirim notifikasi ke semua user role_id = 3 (Prodi)
+        $prodiUsers = User::where('role_id', 3)->get();
+        foreach ($prodiUsers as $prodi) {
+            $prodi->notify(new SuratBaruNotification($surat));
+        }
 
         return redirect()->route('user.template.index')
             ->with('success', 'Surat berhasil ditambahkan!');

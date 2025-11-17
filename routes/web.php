@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\SuratController;
 use App\Http\Controllers\TemplateSuratController;
@@ -71,6 +72,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         });
 
     });
+
+    Route::post('/notifications/read', function () {
+        Auth::user()->unreadNotifications->markAsRead();
+        return back();
+    })->name('notifications.read');
 
 });
 

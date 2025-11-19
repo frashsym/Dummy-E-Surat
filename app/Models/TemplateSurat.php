@@ -3,27 +3,21 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class TemplateSurat extends Model
 {
-    use HasFactory;
-
-    protected $table = 'template_surats';
-
     protected $fillable = [
+        'jenis_surat_id',
         'nama_template',
-        'html_template',
-        'editable_fields',
     ];
 
-    protected $casts = [
-        'editable_fields' => 'array', // otomatis decode/encode JSON
-    ];
-
-    // Relasi ke surat
-    public function surats()
+    public function jenis()
     {
-        return $this->hasMany(Surat::class, 'template_id');
+        return $this->belongsTo(JenisSurat::class, 'jenis_surat_id');
+    }
+
+    public function transaksi()
+    {
+        return $this->hasMany(TransaksiSurat::class, 'template_surat_id');
     }
 }

@@ -91,10 +91,10 @@ class SuratController extends Controller
         ]);
 
         // 🔔 Kirim notifikasi ke semua user role_id = 3 (Prodi)
-        $prodiUsers = User::where('role_id', 3)->get();
-        foreach ($prodiUsers as $prodi) {
-            $prodi->notify(new SuratBaruNotification($surat));
-        }
+        // $prodiUsers = User::where('role_id', 3)->get();
+        // foreach ($prodiUsers as $prodi) {
+        //     $prodi->notify(new SuratBaruNotification($surat));
+        // }
 
         return redirect()->route('user.template.index')
             ->with('success', 'Surat berhasil ditambahkan!');

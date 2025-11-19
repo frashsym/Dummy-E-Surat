@@ -12,7 +12,7 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    <x-nav-link :href="route('index')" :active="request()->routeIs('index')">
                         {{ __('Home') }}
                     </x-nav-link>
                 </div>
@@ -35,7 +35,7 @@
                     </x-nav-link>
                 </div>
 
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex" x-data="{ openNotif: false }">
+                {{-- <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex" x-data="{ openNotif: false }">
 
                     <!-- Icon Lonceng -->
                     <button @click="openNotif = !openNotif" class="relative">
@@ -52,10 +52,10 @@
                                 {{ Auth::user()->unreadNotifications->count() }}
                             </span>
                         @endif
-                    </button>
+                    </button> --}}
 
                     <!-- Dropdown Notifikasi -->
-                    <div x-show="openNotif" @click.outside="openNotif = false"
+                    {{-- <div x-show="openNotif" @click.outside="openNotif = false"
                         class="absolute right-10 mt-10 w-80 bg-white shadow-lg rounded-lg p-4 z-50 max-h-96 overflow-y-auto">
 
                         <h3 class="font-semibold mb-2">Notifikasi</h3>
@@ -87,8 +87,8 @@
                             </form>
                         </div>
 
-                    </div>
-                </div>
+                    </div> --}}
+                {{-- </div> --}}
 
             </div>
 

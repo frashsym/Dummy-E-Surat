@@ -9,8 +9,6 @@ class SuratPermohonanAktifKuliah extends Model
 {
     use HasFactory;
 
-    protected $table = 'surat_permohonan_aktif_kuliahs';
-
     protected $fillable = [
         'ts_id',
         'user_id',

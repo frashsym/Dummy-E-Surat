@@ -9,8 +9,6 @@ class SuratKeteranganMasihKuliah extends Model
 {
     use HasFactory;
 
-    protected $table = 'surat_keterangan_masih_kuliahs';
-
     protected $fillable = [
         'ts_id',
         'user_id',

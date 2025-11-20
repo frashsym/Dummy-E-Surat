@@ -9,8 +9,6 @@ class SuratPermohonanPindahKuliah extends Model
 {
     use HasFactory;
 
-    protected $table = 'surat_permohonan_pindah_kuliahs';
-
     protected $fillable = [
         'ts_id',
         'user_id',

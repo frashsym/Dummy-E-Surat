@@ -9,8 +9,6 @@ class SuratPermohonanCutiAktifMengundurkanDiri extends Model
 {
     use HasFactory;
 
-    protected $table = 'surat_permohonan_cuti_aktif_mengundurkan_diris';
-
     protected $fillable = [
         'ts_id',
         'user_id',

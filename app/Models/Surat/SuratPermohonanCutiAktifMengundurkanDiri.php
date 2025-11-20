@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Surat;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,7 +12,7 @@ class SuratPermohonanCutiAktifMengundurkanDiri extends Model
     protected $table = 'surat_permohonan_cuti_aktif_mengundurkan_diris';
 
     protected $fillable = [
-        'transaksi_surat_id',
+        'ts_id',
         'user_id',
         'perihal',
         'yth',
@@ -29,11 +29,11 @@ class SuratPermohonanCutiAktifMengundurkanDiri extends Model
 
     public function transaksiSurat()
     {
-        return $this->belongsTo(\App\Models\TransaksiSurat::class);
+        return $this->belongsTo(TransaksiSurat::class, 'ts_id');
     }
 
     public function user()
     {
-        return $this->belongsTo(\App\Models\User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

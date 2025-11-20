@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Models\Surat;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SuratKeteranganMasihKuliahDenganOrtu extends Model
+class SuratKeteranganMasihKuliahOrtuDetail extends Model
 {
     use HasFactory;
 
     protected $table = 'surat_keterangan_masih_kuliah_ortu_details';
 
     protected $fillable = [
-        'transaksi_surat_id',
+        'ts_id',
         'user_id',
         'nama_dosen',
         'nidn',
@@ -32,11 +32,11 @@ class SuratKeteranganMasihKuliahDenganOrtu extends Model
 
     public function transaksiSurat()
     {
-        return $this->belongsTo(TransaksiSurat::class, 'transaksi_surat_id');
+        return $this->belongsTo(TransaksiSurat::class, 'ts_id');
     }
 
     public function user()
     {
-        return $this->belongsTo(\App\Models\User::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Surat;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -10,7 +10,7 @@ class SuratPermohonanIzinObservasi extends Model
     use HasFactory;
 
     protected $fillable = [
-        'transaksi_surat_id',
+        'ts_id',
         'user_id',
         'lampiran',
         'perihal',
@@ -23,14 +23,14 @@ class SuratPermohonanIzinObservasi extends Model
         'dosen_pembimbing',
     ];
 
-    public function user()
+    public function transaksiSurat()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(TransaksiSurat::class, 'ts_id');
     }
 
-    public function transaksi()
+    public function user()
     {
-        return $this->belongsTo(TransaksiSurat::class, 'transaksi_surat_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function details()

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Surat;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,7 +10,7 @@ class SuratPermohonanIzinPenelitian extends Model
     use HasFactory;
 
     protected $fillable = [
-        'transaksi_surat_id',
+        'ts_id',
         'user_id',
         'lampiran',
         'perihal',
@@ -29,6 +29,11 @@ class SuratPermohonanIzinPenelitian extends Model
      */
     public function transaksiSurat()
     {
-        return $this->belongsTo(TransaksiSurat::class, 'transaksi_surat_id');
+        return $this->belongsTo(TransaksiSurat::class, 'ts_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

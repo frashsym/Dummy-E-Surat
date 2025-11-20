@@ -31,15 +31,6 @@ class RoleController extends Controller
     }
 
     /**
-     * Tampilkan satu data role berdasarkan ID.
-     */
-    public function show($id)
-    {
-        $role = Role::findOrFail($id);
-        return view('role.show', compact('role'));
-    }
-
-    /**
      * Update data role di database.
      */
     public function update(Request $request, $id)

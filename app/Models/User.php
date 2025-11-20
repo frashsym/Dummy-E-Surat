@@ -24,11 +24,6 @@ class User extends Authenticatable
         'email',
         'password',
         'role_id',
-        'npm',
-        'tingkat',
-        'semester',
-        'wd',
-        'signature',
     ];
 
     public function role()

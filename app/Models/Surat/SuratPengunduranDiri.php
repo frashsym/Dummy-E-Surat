@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class SuratPengunduranDiri extends Model
 {
     protected $fillable = [
-        'transaksi_surat_id',
+        'ts_id',
         'yth',
         'nama_mhs',
         'npm',
@@ -16,8 +16,13 @@ class SuratPengunduranDiri extends Model
         'nama_ortu',
     ];
 
-    public function transaksi()
+    public function transaksiSurat()
     {
-        return $this->belongsTo(TransaksiSurat::class, 'transaksi_surat_id');
+        return $this->belongsTo(TransaksiSurat::class, 'ts_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

@@ -4,13 +4,17 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     public function up(): void
     {
         Schema::create('detail_mengajars', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('surat_tugas_mengajar_id');
+            $table->unsignedBigInteger('mengajar_id');
+            $table->foreign('mengajar_id')
+                ->references('id')
+                ->on('surat_tugas_mengajars')
+                ->cascadeOnDelete();
+
             $table->string('mata_kuliah');
             $table->string('kode_mk');
             $table->string('kelas');
@@ -22,12 +26,14 @@ return new class extends Migration
             $table->time('jam_selesai');
             $table->timestamps();
 
-            $table->foreign('surat_tugas_mengajar_id')->references('id')->on('surat_tugas_mengajars')->onDelete('cascade');
         });
     }
 
     public function down(): void
     {
+        Schema::table('surat_tugas_mengajars', function (Blueprint $table) {
+            $table->dropForeign(['mengajar_id']);
+        });
         Schema::dropIfExists('detail_mengajars');
     }
 };

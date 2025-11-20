@@ -16,9 +16,17 @@ class UserSeeder extends Seeder
         // SUPERADMIN
         User::create([
             'name' => 'Superadmin',
-            'email' => 'admin@gmail.com',
+            'email' => 'super@gmail.com',
             'password' => Hash::make('password'),
             'role_id' => 1,
+        ]);
+
+        // ADMINISTRATOR
+        User::create([
+            'name' => 'Admin',
+            'email' => 'admin@gmail.com',
+            'password' => Hash::make('password'),
+            'role_id' => 2,
         ]);
 
         // PIMPINAN
@@ -26,43 +34,38 @@ class UserSeeder extends Seeder
             'name' => 'Pimpinan Fakultas',
             'email' => 'pimpinan@gmail.com',
             'password' => Hash::make('password'),
-            'role_id' => 2,
+            'role_id' => 3,
         ]);
 
         User::create([
             'name' => 'Wakil Dekan',
             'email' => 'wd@gmail.com',
             'password' => Hash::make('password'),
-            'wd' => 1,
-            'role_id' => 2,
+            'role_id' => 3,
         ]);
 
         // PRODI
         User::create([
-            'name' => 'Kaprodi Informatika',
+            'name' => 'Kaprodi',
             'email' => 'prodi@gmail.com',
             'password' => Hash::make('password'),
-            'role_id' => 3,
+            'role_id' => 4,
         ]);
 
         // DOSEN
         User::create([
-            'name' => 'Dosen Informatika',
+            'name' => 'Dosen',
             'email' => 'dosen@gmail.com',
             'password' => Hash::make('password'),
-            'role_id' => 4,
+            'role_id' => 5,
         ]);
 
         // MAHASISWA
         User::create([
             'name' => 'Mahasiswa',
             'email' => 'mahasiswa@gmail.com',
-            'npm' => '1001',
-            'tingkat' => 'IV',
-            'semester' => 8,
-            'no_hp' => '081234567890',
             'password' => Hash::make('password'),
-            'role_id' => 5,
+            'role_id' => 6,
         ]);
     }
 }

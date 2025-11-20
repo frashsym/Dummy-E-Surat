@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('template_surats', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('jenis_surat_id')->constrained('jenis_surat')->cascadeOnDelete();
+            $table->foreignId('jenis_surat_id')->constrained('jenis_surats')->cascadeOnDelete();
             $table->string('nama_template');
             $table->timestamps();
         });

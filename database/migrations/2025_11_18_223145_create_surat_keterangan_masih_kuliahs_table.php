@@ -14,13 +14,13 @@ return new class extends Migration {
             $table->id();
 
             // FK ke transaksi surat
-            $table->unsignedBigInteger('transaksi_surat_id');
-            $table->foreign('transaksi_surat_id')
+            $table->unsignedBigInteger('ts_id');
+            $table->foreign('ts_id')
                 ->references('id')
                 ->on('transaksi_surats')
                 ->cascadeOnDelete();
 
-            // user_id setelah transaksi_surat_id
+            // user_id setelah ts_id
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')
                 ->references('id')
@@ -48,7 +48,7 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::table('surat_keterangan_masih_kuliahs', function (Blueprint $table) {
-            $table->dropForeign(['transaksi_surat_id']);
+            $table->dropForeign(['ts_id']);
             $table->dropForeign(['user_id']);
         });
 

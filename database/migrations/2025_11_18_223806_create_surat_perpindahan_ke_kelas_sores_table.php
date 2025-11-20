@@ -7,12 +7,12 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::create('surat_pengajuan_permohonan_perpindahan_ke_kelas_sore_regulers', function (Blueprint $table) {
+        Schema::create('surat_perpindahan_ke_kelas_sores', function (Blueprint $table) {
             $table->id();
 
-            // FK transaksi_surat_id
-            $table->unsignedBigInteger('transaksi_surat_id');
-            $table->foreign('transaksi_surat_id')
+            // FK ts_id
+            $table->unsignedBigInteger('ts_id');
+            $table->foreign('ts_id')
                 ->references('id')
                 ->on('transaksi_surats')
                 ->cascadeOnDelete();
@@ -41,7 +41,7 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::table('surat_pengajuan_permohonan_perpindahan_ke_kelas_sore_regulers', function (Blueprint $table) {
-            $table->dropForeign(['transaksi_surat_id']);
+            $table->dropForeign(['ts_id']);
             $table->dropForeign(['user_id']);
         });
 

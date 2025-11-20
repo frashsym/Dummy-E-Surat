@@ -10,9 +10,9 @@ return new class extends Migration {
         Schema::create('surat_permohonan_pindah_kuliahs', function (Blueprint $table) {
             $table->id();
 
-            // FK transaksi_surat_id
-            $table->unsignedBigInteger('transaksi_surat_id');
-            $table->foreign('transaksi_surat_id')
+            // FK ts_id
+            $table->unsignedBigInteger('ts_id');
+            $table->foreign('ts_id')
                 ->references('id')
                 ->on('transaksi_surats')
                 ->cascadeOnDelete();
@@ -40,7 +40,7 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::table('surat_permohonan_pindah_kuliahs', function (Blueprint $table) {
-            $table->dropForeign(['transaksi_surat_id']);
+            $table->dropForeign(['ts_id']);
             $table->dropForeign(['user_id']);
         });
 

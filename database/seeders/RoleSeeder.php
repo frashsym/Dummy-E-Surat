@@ -20,6 +20,11 @@ class RoleSeeder extends Seeder
                 'updated_at' => Carbon::now(),
             ],
             [
+                'nama_role' => 'Administrator',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
                 'nama_role' => 'Pimpinan',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),

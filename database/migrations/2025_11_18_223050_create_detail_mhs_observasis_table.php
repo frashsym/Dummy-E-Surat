@@ -9,11 +9,17 @@ return new class extends Migration {
     {
         Schema::create('detail_mhs_observasis', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-
             // FK ke surat observasi induk
-            $table->foreignId('surat_observasi_id')
-                ->constrained('surat_permohonan_izin_observasis')
+            $table->unsignedBigInteger('obser_id');
+            $table->foreign('obser_id')
+                ->references('id')
+                ->on('surat_permohonan_izin_observasis')
+                ->cascadeOnDelete();
+
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
                 ->cascadeOnDelete();
 
             $table->string('nama_mhs');
@@ -29,7 +35,8 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::table('detail_mhs_observasis', function (Blueprint $table) {
-            $table->dropForeign(['surat_observasi_id']);
+            $table->dropForeign(['obser_id']);
+            $table->dropForeign(['user_id']);
         });
 
         Schema::dropIfExists('detail_mhs_observasis');

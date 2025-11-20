@@ -14,10 +14,18 @@ return new class extends Migration {
             $table->id();
 
             // Foreign Key ke transaksi_surats
-            $table->foreignId('transaksi_surat_id')
-                ->constrained('transaksi_surats')
+            $table->unsignedBigInteger('ts_id');
+            $table->foreign('ts_id')
+                ->references('id')
+                ->on('transaksi_surats')
                 ->cascadeOnDelete();
-            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+
+            // user_id setelah ts_id
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->cascadeOnDelete();
 
             $table->string('lampiran')->nullable();
             $table->string('perihal');
@@ -42,7 +50,8 @@ return new class extends Migration {
     {
         // Hapus FK dulu
         Schema::table('surat_permohonan_studi_praktek_manajemens', function (Blueprint $table) {
-            $table->dropForeign(['transaksi_surat_id']);
+            $table->dropForeign(['ts_id']);
+            $table->dropForeign(['user_id']);
         });
 
         Schema::dropIfExists('surat_permohonan_studi_praktek_manajemens');

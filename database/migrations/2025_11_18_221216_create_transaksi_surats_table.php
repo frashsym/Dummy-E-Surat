@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::create('transaksi_surats', function (Blueprint $table) {
             $table->id();
             // template surat yang dipakai
-            $table->foreignId('template_surat_id')->constrained('template_surat')->cascadeOnDelete();
+            $table->foreignId('template_surat_id')->constrained('template_surats')->cascadeOnDelete();
 
             // ID surat spesifik, mengarah ke tabel surat template tertentu
             $table->unsignedBigInteger('surat_id');

@@ -41,7 +41,7 @@
                     <h4 class="text-lg font-semibold text-gray-800 dark:text-gray-200">E-Surat</h4>
                     <p class="text-gray-500 dark:text-gray-400 text-sm mt-2">Layanan untuk pengelolaan surat masuk dan
                         keluar secara elektronik.</p>
-                    <a href="{{ route('user.template.index') }}"
+                    <a href="{{ route('surat.index') }}"
                         class="mt-4 inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-semibold">Buka</a>
                 </div>
 

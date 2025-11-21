@@ -46,37 +46,26 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('user.index');
         Route::get('/detail/{user}', [UserController::class, 'show'])->name('user.show');
 
-        // Halaman daftar template surat (card)
-        Route::prefix('surat/template')->name('user.template.')->group(function () {
+        // Prefix semua route surat
+        // ================= SURAT AREA ==================
+        Route::prefix('surat')->group(function () {
 
-            // LIST TEMPLATE
-            Route::get('/', [TemplateSuratController::class, 'index'])->name('index');
+            // tampilkan semua template surat
+            Route::get('/', [SuratController::class, 'index'])->name('surat.index');
 
-            // ADD TEMPLATE
-            Route::post('/', [TemplateSuratController::class, 'store'])->name('store');
+            // ambil template tertentu + render field editing
+            Route::get('/{template}', [SuratController::class, 'show'])->name('surat.show');
 
-            // SHOW TEMPLATE
-            Route::get('/{template}', [TemplateSuratController::class, 'show'])->name('show');
-        });
-
-        Route::prefix('surat')->name('user.surat.')->group(function () {
-
-            // LIST TEMPLATE
-            Route::get('/', [SuratController::class, 'index'])->name('index');
-
-            // FORM MENGISI TEMPLATE → BIKIN SURAT BARU
-            Route::post('/buat/{template}', [SuratController::class, 'store'])->name('store');
-
-            // UPDATE SURAT YANG SUDAH ADA
-            Route::put('/edit/{surat}', [SuratController::class, 'update'])->name('update');
+            // simpan surat ke tabel final sesuai template
+            Route::post('/{template}', [SuratController::class, 'store'])->name('surat.store');
         });
 
     });
 
-    Route::post('/notifications/read', function () {
-        Auth::user()->unreadNotifications->markAsRead();
-        return back();
-    })->name('notifications.read');
+    // Route::post('/notifications/read', function () {
+    //     Auth::user()->unreadNotifications->markAsRead();
+    //     return back();
+    // })->name('notifications.read');
 
 });
 

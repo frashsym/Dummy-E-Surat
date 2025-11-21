@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Data User') }}
+            {{ __('Data Staff') }}
         </h2>
     </x-slot>
 
@@ -26,6 +26,7 @@
                 </div>
             @endif
 
+            @superadmin
             {{-- Tombol tambah --}}
             <div class="flex justify-end">
                 <button onclick="openModal()"
@@ -37,11 +38,12 @@
                     Tambah User
                 </button>
             </div>
+            @endsuperadmin
 
             {{-- Tabel daftar user --}}
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <h3 class="text-lg font-semibold mb-4">Daftar User</h3>
+                    <h3 class="text-lg font-semibold mb-4">Daftar Staff</h3>
 
                     <div class="overflow-x-auto">
                         <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
@@ -147,10 +149,10 @@
                             password.</small>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Role</label>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Posisi</label>
                         <select id="modalRole" name="role_id"
                             class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100">
-                            <option value="">Pilih Role</option>
+                            <option value="">Pilih Posisi</option>
                             @foreach($roles as $role)
                                 <option value="{{ $role->id }}">{{ $role->nama_role }}</option>
                             @endforeach
@@ -211,7 +213,7 @@
                 roleSelect.value = user.role_id ?? '';
             } else {
                 modalTitle.textContent = 'Tambah User';
-                userForm.action = `{{ route('admin.user.store') }}`;
+                userForm.action = `{{ route('staff.store') }}`;
                 formMethod.value = 'POST';
                 nameInput.value = '';
                 emailInput.value = '';

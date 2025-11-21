@@ -26,6 +26,7 @@ return new class extends Migration {
             $table->string('wd')->nullable();
             $table->string('fakultas')->nullable();
             $table->string('prodi')->nullable(); // untuk Kaprodi
+            $table->string('profile')->nullable(); // profile
             $table->string('ttd')->nullable(); // simpan path file tanda tangan digital
 
             $table->timestamps();

@@ -24,6 +24,7 @@ return new class extends Migration {
             $table->string('nip')->nullable();
             $table->string('fakultas');
             $table->string('prodi');
+            $table->string('profile')->nullable(); // profile
             $table->string('ttd')->nullable(); // path tanda tangan digital
 
             $table->timestamps();

@@ -30,6 +30,7 @@ return new class extends Migration {
             $table->date('tgl_lahir')->nullable();
             $table->string('no_hp')->nullable();
             $table->text('alamat')->nullable();
+            $table->string('profile')->nullable(); // profile
 
             $table->timestamps();
         });

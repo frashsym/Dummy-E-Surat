@@ -29,6 +29,7 @@ return new class extends Migration {
             $table->string('pangkat_golongan')->nullable(); // III/a, III/b, dll
             $table->string('no_hp')->nullable();
             $table->text('alamat')->nullable();
+            $table->string('profile')->nullable(); // profile
             $table->string('ttd')->nullable(); // path file tanda tangan
 
             $table->timestamps();

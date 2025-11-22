@@ -26,95 +26,98 @@
                 </div>
             @endif
 
-            @superadmin
-            {{-- Tombol tambah --}}
-            <div class="flex justify-end">
-                <button onclick="openModal()"
-                    class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md flex items-center gap-2 transition">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                    </svg>
-                    Tambah User
-                </button>
-            </div>
-            @endsuperadmin
+            {{-- Tombol Tambah User - hanya muncul jika role user login adalah admin/superadmin --}}
+            @if(in_array(auth()->user()->role_id, [1, 2]))
+                <div class="flex justify-end mb-4">
+                    <button onclick="openModal()"
+                        class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md flex items-center gap-2 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                        Tambah User
+                    </button>
+                </div>
+            @endif
 
-            {{-- Daftar Staff (dalam bentuk card) --}}
+
+            {{-- Daftar Staff --}}
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 
                 @forelse($users as $user)
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4 flex gap-4 items-start">
 
-                    {{-- FOTO PROFIL --}}
-                    <div>
-                        <img src="https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=random"
-                            class="w-16 h-16 rounded-full object-cover" alt="avatar">
-                    </div>
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4 flex gap-4 items-start">
 
-                    {{-- INFORMASI STAFF --}}
-                    <div class="flex-1">
-                        <h3 class="text-lg font-semibold">{{ $user->name }}</h3>
-                        <p class="text-gray-600 dark:text-gray-300 text-sm">{{ $user->email }}</p>
-                        <p class="text-gray-600 dark:text-gray-300 text-sm">
-                            Posisi: <span class="font-medium">{{ $user->role->nama_role }}</span>
-                        </p>
+                        {{-- FOTO PROFIL --}}
+                        <div>
+                            <img src="https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=random"
+                                class="w-16 h-16 rounded-full object-cover" alt="avatar">
+                        </div>
 
-                        {{-- ATRIBUT KHUSUS PER ROLE --}}
-                        <div class="mt-2 text-sm text-gray-700 dark:text-gray-200 space-y-1">
+                        {{-- INFORMASI STAFF --}}
+                        <div class="flex-1">
+                            <h3 class="text-lg font-semibold">{{ $user->name }}</h3>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">
+                                Posisi: <span class="font-medium">{{ $user->role->nama_role }}</span>
+                            </p>
 
-                            @if($user->role_id == 3)
-                                {{-- Pimpinan --}}
-                                <p><strong>Jabatan:</strong> {{ $user->pimpinan->jabatan ?? '-' }}</p>
-                                <p><strong>Unit:</strong> {{ $user->pimpinan->unit ?? '-' }}</p>
+                            {{-- ATRIBUT KHUSUS PER ROLE --}}
+                            <div class="mt-2 text-sm text-gray-700 dark:text-gray-200 space-y-1">
 
-                            @elseif($user->role_id == 4)
-                                {{-- Prodi --}}
-                                <p><strong>Program Studi:</strong> {{ $user->prodi->nama_prodi ?? '-' }}</p>
-                                <p><strong>Konsentrasi:</strong> {{ $user->prodi->konsentrasi ?? '-' }}</p>
+                                @if($user->role_id == 3)
+                                    <p><strong>Jabatan:</strong> {{ $user->pimpinan->jabatan ?? '-' }}</p>
+                                    <p><strong>Fakultas:</strong> {{ $user->pimpinan->fakultas ?? '-' }}</p>
+                                    <p><strong>Prodi:</strong> {{ $user->pimpinan->prodi ?? '-' }}</p>
 
-                            @elseif($user->role_id == 5)
-                                {{-- Dosen --}}
-                                <p><strong>NIDN:</strong> {{ $user->dosen->nidn ?? '-' }}</p>
-                                <p><strong>Jurusan:</strong> {{ $user->dosen->jurusan ?? '-' }}</p>
+                                @elseif($user->role_id == 4)
+                                    <p><strong>Fakultas:</strong> {{ $user->kaprodi->fakultas ?? '-' }}</p>
+                                    <p><strong>Prodi:</strong> {{ $user->kaprodi->prodi ?? '-' }}</p>
 
+                                @elseif($user->role_id == 5)
+                                    <p><strong>NIDN:</strong> {{ $user->dosen->nidn ?? '-' }}</p>
+                                    <p><strong>Prodi:</strong> {{ $user->dosen->prodi ?? '-' }}</p>
+
+                                @endif
+
+                            </div>
+
+
+                            {{-- Tombol Edit & Hapus → hanya admin (1) dan operator (2) --}}
+                            @if(in_array(auth()->user()->role_id, [1, 2]))
+                                <div class="mt-3 flex gap-2">
+                                    <button onclick="openModal({{ $user }})"
+                                        class="px-3 py-1 bg-yellow-500 hover:bg-yellow-600 text-white rounded text-sm">
+                                        Edit
+                                    </button>
+
+                                    <button onclick="confirmDelete({{ $user->id }})"
+                                        class="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded text-sm">
+                                        Hapus
+                                    </button>
+                                </div>
                             @endif
 
                         </div>
-
-                        {{-- AKSI UNTUK SUPERADMIN --}}
-                        @superadmin
-                        <div class="mt-3 flex gap-2">
-                            <button onclick="openModal({{ $user }})"
-                                class="px-3 py-1 bg-yellow-500 hover:bg-yellow-600 text-white rounded text-sm">
-                                Edit
-                            </button>
-
-                            <button onclick="confirmDelete({{ $user->id }})"
-                                class="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded text-sm">
-                                Hapus
-                            </button>
-                        </div>
-                        @endsuperadmin
-
                     </div>
-                </div>
+
                 @empty
 
-                <div class="col-span-full text-center py-6 text-gray-500 dark:text-gray-400">
-                    Belum ada data staff.
-                </div>
+                    <div class="col-span-full text-center py-6 text-gray-500 dark:text-gray-400">
+                        Belum ada data staff.
+                    </div>
 
                 @endforelse
 
             </div>
 
-            {{-- Pagination --}}
-            <div class="mt-4">
-                {{ $users->links() }}
-            </div>
-
         </div>
+
+        {{-- Pagination --}}
+        <div class="mt-4">
+            {{ $users->links() }}
+        </div>
+
+    </div>
     </div>
 
     {{-- Modal Create/Edit --}}

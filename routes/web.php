@@ -20,9 +20,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return redirect('/');
     })->name('dashboard');
 
-    // ================= ROLE MANAGEMENT (Hanya Admin) =================
+    // ================= ROLE MANAGEMENT (Hanya Superadmin) =================
     Route::resource('/role', RoleController::class)
-        ->middleware('role:admin')
+        ->middleware('role:superadmin')
         ->names([
             'index' => 'role.index',
             'store' => 'role.store',

@@ -16,8 +16,8 @@ class UserController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $users = User::with('role')
-            ->whereNotIn('role_id', [1, 6])  // Mahasiswa tidak ditampilkan
+        $users = User::with(['role', 'pimpinan', 'kaprodi', 'dosen'])
+            ->whereNotIn('role_id', [1, 2, 6])
             ->orderBy('id', 'desc')
             ->paginate(10);
         // Role tetap diambil (hanya superadmin yang butuh)

@@ -15,37 +15,45 @@ class RoleAccessMiddleware
             abort(403, 'Unauthorized');
         }
 
-        // Ambil nama role dari relasi user->role
         $roleName = optional($user->role)->nama_role;
 
-        // Role yang dianggap admin
-        $adminRoles = ['Superadmin'];
+        // ROLE GROUPING
+        $superadminOnly = ['Superadmin'];
+        $adminRoles     = ['Superadmin', 'Administrator'];
+        $userRoles      = ['Superadmin', 'Administrator', 'Pimpinan', 'Prodi', 'Dosen', 'Mahasiswa'];
 
-        // Role yang boleh fitur user
-        $userRoles  = ['Superadmin', 'Pimpinan', 'Prodi', 'Dosen', 'Mahasiswa'];
+        // ============ ROLE LOGIC ============
 
-        // Superadmin → bisa SEMUA ROUTE tanpa pengecekan lain
+        // superadmin → bypass semua
         if ($roleName === 'Superadmin') {
             return $next($request);
         }
 
-        // Kalau route ini butuh role admin
+        // superadmin only routes
+        if ($roleType === 'superadmin') {
+            if (!in_array($roleName, $superadminOnly)) {
+                abort(403, 'Hanya Superadmin.');
+            }
+            return $next($request);
+        }
+
+        // admin routes (superadmin + administrator)
         if ($roleType === 'admin') {
             if (!in_array($roleName, $adminRoles)) {
-                abort(403, 'Akses admin ditolak.');
+                abort(403, 'Hanya Admin.');
             }
             return $next($request);
         }
 
-        // Kalau route ini butuh role user
+        // user routes
         if ($roleType === 'user') {
             if (!in_array($roleName, $userRoles)) {
-                abort(403, 'Akses user ditolak.');
+                abort(403, 'Hanya User.');
             }
             return $next($request);
         }
 
-        // Jika tidak ada parameter → lewati saja
+        // tanpa parameter → lolos
         return $next($request);
     }
 }

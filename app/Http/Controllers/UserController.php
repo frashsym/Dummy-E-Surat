@@ -17,9 +17,9 @@ class UserController extends Controller
     {
         $user = Auth::user();
         $users = User::with('role')
-            ->where('role_id', '!=', 5)  // Mahasiswa tidak ditampilkan
+            ->whereNotIn('role_id', [1, 6])  // Mahasiswa tidak ditampilkan
             ->orderBy('id', 'desc')
-            ->paginate(5);
+            ->paginate(10);
         // Role tetap diambil (hanya superadmin yang butuh)
         $roles = Role::orderBy('nama_role')->get();
 

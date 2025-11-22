@@ -40,81 +40,80 @@
             </div>
             @endsuperadmin
 
-            {{-- Tabel daftar user --}}
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <h3 class="text-lg font-semibold mb-4">Daftar Staff</h3>
+            {{-- Daftar Staff (dalam bentuk card) --}}
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                            <thead class="bg-gray-50 dark:bg-gray-700">
-                                <tr>
-                                    <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">
-                                        No</th>
-                                    <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">
-                                        Nama</th>
-                                    <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">
-                                        Email</th>
-                                    <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">
-                                        Posisi</th>
-                                    @superadmin
-                                    <th
-                                        class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">
-                                        Aksi</th>
-                                    @endsuperadmin
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                                @forelse($users as $user)
-                                <tr>
-                                    <td class="px-6 py-4 text-sm">{{ $users->firstItem() + $loop->index }}</td>
-                                    <td class="px-6 py-4 text-sm">{{ $user->name }}</td>
-                                    <td class="px-6 py-4 text-sm">{{ $user->email }}</td>
-                                    <td class="px-6 py-4 text-sm">{{ $user->role->nama_role ?? '-' }}</td>
-                                    @superadmin
-                                    <td class="px-6 py-4 text-right space-x-2">
-                                        <button onclick="openModal({{ $user }})"
-                                            class="px-3 py-1 bg-yellow-500 hover:bg-yellow-600 text-white rounded-md inline-flex items-center gap-1 transition">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20"
-                                                fill="currentColor">
-                                                <path
-                                                    d="M17.414 2.586a2 2 0 00-2.828 0L6 11.172V14h2.828l8.586-8.586a2 2 0 000-2.828z" />
-                                            </svg>
-                                            Edit
-                                        </button>
+                @forelse($users as $user)
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4 flex gap-4 items-start">
 
-                                        <button onclick="confirmDelete({{ $user->id }})"
-                                            class="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded-md inline-flex items-center gap-1 transition">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
-                                                viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M6 18L18 6M6 6l12 12" />
-                                            </svg>
-                                            Hapus
-                                        </button>
-                                    </td>
-                                    @endsuperadmin
-                                </tr>
-                                @empty
-                                <tr>
-                                    <td colspan="5" class="text-center py-4 text-gray-500 dark:text-gray-400">Belum ada
-                                        data user.</td>
-                                </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
+                    {{-- FOTO PROFIL --}}
+                    <div>
+                        <img src="https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=random"
+                            class="w-16 h-16 rounded-full object-cover" alt="avatar">
                     </div>
 
-                    {{-- Pagination --}}
-                    <div class="mt-4">
-                        {{ $users->links() }}
+                    {{-- INFORMASI STAFF --}}
+                    <div class="flex-1">
+                        <h3 class="text-lg font-semibold">{{ $user->name }}</h3>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm">{{ $user->email }}</p>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm">
+                            Posisi: <span class="font-medium">{{ $user->role->nama_role }}</span>
+                        </p>
+
+                        {{-- ATRIBUT KHUSUS PER ROLE --}}
+                        <div class="mt-2 text-sm text-gray-700 dark:text-gray-200 space-y-1">
+
+                            @if($user->role_id == 3)
+                                {{-- Pimpinan --}}
+                                <p><strong>Jabatan:</strong> {{ $user->pimpinan->jabatan ?? '-' }}</p>
+                                <p><strong>Unit:</strong> {{ $user->pimpinan->unit ?? '-' }}</p>
+
+                            @elseif($user->role_id == 4)
+                                {{-- Prodi --}}
+                                <p><strong>Program Studi:</strong> {{ $user->prodi->nama_prodi ?? '-' }}</p>
+                                <p><strong>Konsentrasi:</strong> {{ $user->prodi->konsentrasi ?? '-' }}</p>
+
+                            @elseif($user->role_id == 5)
+                                {{-- Dosen --}}
+                                <p><strong>NIDN:</strong> {{ $user->dosen->nidn ?? '-' }}</p>
+                                <p><strong>Jurusan:</strong> {{ $user->dosen->jurusan ?? '-' }}</p>
+
+                            @endif
+
+                        </div>
+
+                        {{-- AKSI UNTUK SUPERADMIN --}}
+                        @superadmin
+                        <div class="mt-3 flex gap-2">
+                            <button onclick="openModal({{ $user }})"
+                                class="px-3 py-1 bg-yellow-500 hover:bg-yellow-600 text-white rounded text-sm">
+                                Edit
+                            </button>
+
+                            <button onclick="confirmDelete({{ $user->id }})"
+                                class="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded text-sm">
+                                Hapus
+                            </button>
+                        </div>
+                        @endsuperadmin
+
                     </div>
                 </div>
+                @empty
+
+                <div class="col-span-full text-center py-6 text-gray-500 dark:text-gray-400">
+                    Belum ada data staff.
+                </div>
+
+                @endforelse
+
             </div>
+
+            {{-- Pagination --}}
+            <div class="mt-4">
+                {{ $users->links() }}
+            </div>
+
         </div>
     </div>
 

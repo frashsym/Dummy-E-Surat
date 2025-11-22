@@ -1,7 +1,10 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Surat;
 
+use App\Models\TransaksiSurat;
+use App\Models\User;
+use App\Models\Detail\DetailMengajar;
 use Illuminate\Database\Eloquent\Model;
 
 class SuratTugasMengajar extends Model

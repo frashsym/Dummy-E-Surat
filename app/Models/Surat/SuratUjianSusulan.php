@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Surat;
 
+use App\Models\TransaksiSurat;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 
 class SuratUjianSusulan extends Model

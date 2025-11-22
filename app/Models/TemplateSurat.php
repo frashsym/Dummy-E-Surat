@@ -9,7 +9,13 @@ class TemplateSurat extends Model
     protected $fillable = [
         'jenis_surat_id',
         'nama_template',
+        'slug',
     ];
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 
     public function jenis()
     {

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Detail;
 
+use App\Models\Surat\SuratPermohonanIzinObservasi;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 

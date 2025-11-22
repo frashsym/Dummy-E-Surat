@@ -15,8 +15,6 @@ class Dosen extends Model
         'nidn',
         'fakultas',
         'prodi',
-        'jabatan_fungsional',
-        'pangkat_golongan',
         'no_hp',
         'alamat',
         'ttd',

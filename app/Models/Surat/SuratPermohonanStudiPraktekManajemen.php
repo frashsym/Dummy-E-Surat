@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Surat;
 
+use App\Models\TransaksiSurat;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use App\Models\TransaksiSurat;
 
 class SuratPermohonanStudiPraktekManajemen extends Model
 {

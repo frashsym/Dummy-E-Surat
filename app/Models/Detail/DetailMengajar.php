@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Detail;
 
+use App\Models\Surat\SuratTugasMengajar;
 use Illuminate\Database\Eloquent\Model;
 
 class DetailMengajar extends Model

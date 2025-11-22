@@ -56,7 +56,9 @@
 
                         {{-- INFORMASI STAFF --}}
                         <div class="flex-1">
-                            <h3 class="text-lg font-semibold">{{ $user->name }}</h3>
+                            <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100 leading-snug">
+                                {{ $user->name }}
+                            </h3>
                             <p class="text-gray-600 dark:text-gray-300 text-sm">
                                 Posisi: <span class="font-medium">{{ $user->role->nama_role }}</span>
                             </p>
@@ -117,7 +119,6 @@
             {{ $users->links() }}
         </div>
 
-    </div>
     </div>
 
     {{-- Modal Create/Edit --}}

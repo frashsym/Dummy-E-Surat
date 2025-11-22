@@ -1,7 +1,10 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Surat;
 
+use App\Models\TransaksiSurat;
+use App\Models\User;
+use App\Models\Detail\DetailMhsObservasi;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -35,6 +38,6 @@ class SuratPermohonanIzinObservasi extends Model
 
     public function details()
     {
-        return $this->hasMany(DetaIlMhsObservasi::class, 'surat_observasi_id');
+        return $this->hasMany(DetailMhsObservasi::class, 'surat_observasi_id');
     }
 }

@@ -36,6 +36,18 @@
             {{ $slot }}
         </main>
     </div>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between">
+
+            <p class="text-sm text-gray-600 dark:text-gray-300">
+                &copy; {{ date('Y') }} {{ config('app.name') }}. All rights reserved.
+            </p>
+
+        </div>
+    </footer>
+
 </body>
 
 </html>

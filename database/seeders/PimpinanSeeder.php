@@ -11,22 +11,22 @@ class PimpinanSeeder extends Seeder
     {
         // Pimpinan Fakultas
         Pimpinan::create([
-            'user_id'  => 3, // dari seeder User
+            'user_id'  => 3,
             'nip'      => '197812312023121001',
             'jabatan'  => 'Dekan',
             'fakultas' => 'Teknik',
-            'prodi'    => null,
+            'prodi'    => 'Informatika',
             'ttd'      => null,
         ]);
 
         // Wakil Dekan
         Pimpinan::create([
-            'user_id'  => 3,
+            'user_id'  => 4,
             'nip'      => '198003052023121002',
             'jabatan'  => 'Wakil Dekan',
             'wd' => 1,
             'fakultas' => 'Teknik',
-            'prodi'    => null,
+            'prodi'    => 'Informatika',
             'ttd'      => null,
         ]);
     }

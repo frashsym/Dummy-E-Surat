@@ -16,12 +16,12 @@ class MahasiswaSeeder extends Seeder
 
         // Insert data mahasiswa
         Mahasiswa::create([
-            'user_id'      => 6,
+            'user_id'      => 7,
             'npm'          => '123456789',
             'fakultas'     => 'Teknik',
             'prodi'        => 'Informatika',
             'angkatan'     => '2022',
-            'kelas'        => 'IF-2',
+            'kelas'        => '1A',
             'jenis_kelamin'=> 'L',
             'tgl_lahir'    => '2003-01-12',
             'no_hp'        => '081234567890',

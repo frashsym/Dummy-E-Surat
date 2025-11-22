@@ -14,6 +14,9 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('jenis_surat_id')->constrained('jenis_surats')->cascadeOnDelete();
             $table->string('nama_template');
+            $table->string('slug');
+            $table->string('kop_surat')->nullable();
+            $table->text('body_template');
             $table->timestamps();
         });
     }

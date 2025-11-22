@@ -11,7 +11,6 @@ use App\Http\Controllers\UserController;
 
 Route::get('/', [IndexController::class, 'index'])->name('index');
 Route::get('/staff', [UserController::class, 'index'])->name('user.index');
-Route::get('/staff/{user}', [UserController::class, 'show'])->name('user.show');
 
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -30,20 +29,22 @@ Route::middleware(['auth', 'verified'])->group(function () {
             'update' => 'role.update',
             'destroy' => 'role.destroy',
         ]);
-    // ================= STAFF MANAGEMENT KHUSUS ADMIN =================
-    Route::resource('/staff', UserController::class)
-        ->only(['store', 'update', 'destroy'])
-        ->middleware('role:admin');
 
     // ================= SURAT AREA (Dipakai admin & user) =================
     Route::prefix('surat')->group(function () {
 
         Route::get('/', [SuratController::class, 'index'])->name('surat.index');
 
-        Route::get('/{template}', [SuratController::class, 'show'])->name('surat.show');
+        Route::get('/{template:slug}', [SuratController::class, 'show'])->name('surat.show');
 
         Route::post('/{template}', [SuratController::class, 'store'])->name('surat.store');
     });
+
+    // ================= STAFF MANAGEMENT KHUSUS ADMIN =================
+    Route::resource('/staff', UserController::class)
+        ->only(['store', 'update', 'destroy'])
+        ->middleware('role:admin');
+
 
     // Route::post('/notifications/read', function () {
     //     Auth::user()->unreadNotifications->markAsRead();

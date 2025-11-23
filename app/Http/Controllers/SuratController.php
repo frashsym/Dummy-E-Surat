@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\TemplateSurat;
 use App\Models\TransaksiSurat;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
 class SuratController extends Controller
@@ -37,24 +38,35 @@ class SuratController extends Controller
     // =====================
     // 2. TAMPILKAN TEMPLATE TERPILIH
     // =====================
+
     public function show($slug)
     {
         // ambil template berdasarkan slug
-        $dataTemplate = TemplateSurat::with('pimpinan')->where('slug', $slug)->firstOrFail();
+        $dataTemplate = TemplateSurat::with('pimpinan.user')
+            ->where('slug', $slug)
+            ->firstOrFail();
 
-        // tentukan model target tabel final (assume keys di $templateMap pakai slug)
+        // tentukan model final
         $modelClass = $this->templateMap[$slug] ?? null;
-        if (!$modelClass) {
-            // kalau lo tidak ingin pakai model mapping, tetap generate fields dari contoh model:
-            // abort(404, "Template surat tidak ditemukan.");
-            $fillable = []; // kosong: form dinamis nanti dari $_templateModel atau manual
-        } else {
-            $fillable = (new $modelClass)->getFillable();
-        }
+        $fillable = $modelClass ? (new $modelClass)->getFillable() : [];
 
-        // siapkan fields array untuk form (mirip versi sebelumnya)
+        // field yang TIDAK BOLEH dirender di form
+        $reserved = [
+            'nomor_surat',
+            'lampiran',
+            'perihal',
+            'pimpinan_nama',
+            'pimpinan_jabatan',
+            'pimpinan_ttd',
+            'tgl_surat',
+            'id',
+            'ts_id',    // otomatis, disembunyikan
+            'user_id',  // otomatis, disembunyikan
+        ];
+
+        // generate fields untuk form (selain reserved)
         $fields = [];
-        foreach ($fillable as $f) {
+        foreach (array_diff($fillable, $reserved) as $f) {
             $fields[] = [
                 'label' => ucwords(str_replace('_', ' ', $f)),
                 'name' => $f,
@@ -62,67 +74,73 @@ class SuratController extends Controller
             ];
         }
 
-        // default values (prefill)
-        $defaultNomor = $this->generateNomorSurat($dataTemplate->id);
-        $defaultLampiran = $dataTemplate->nama_template;
-        $defaultPerihal = $dataTemplate->nama_template; // atau $dataTemplate->perihal jika ada
-        $pimpinan = $dataTemplate->pimpinan; // hasOne relation to pimpinans
+        // data pimpinan
+        $pimpinan = $dataTemplate->pimpinan;
+        $userPimpinan = optional($pimpinan)->user; // akses relasi user
 
+        // default values
         $defaults = [
-            'nomor_surat' => $defaultNomor,
-            'lampiran' => $defaultLampiran,
-            'perihal' => $defaultPerihal,
-            'pimpinan_nama' => $pimpinan->nama ?? '',
+            'nomor_surat' => $this->generateNomorSurat($dataTemplate->id),
+            'lampiran' => '',
+            'perihal' => $dataTemplate->nama_template ?? '',
+            'pimpinan_nama' => $userPimpinan->name ?? '',   // dari tabel users
             'pimpinan_jabatan' => $pimpinan->jabatan ?? '',
             'pimpinan_ttd' => $pimpinan->ttd ?? '',
-            'tgl_surat' => Carbon::now()->toDateString(),
+            'tgl_surat' => now()->toDateString(),
         ];
 
-        // pass juga body_template mentah supaya JS bisa render live preview
         $bodyTemplateRaw = $dataTemplate->body_template;
 
-        return view('surat.show', compact('dataTemplate', 'fields', 'defaults', 'bodyTemplateRaw', 'fillable'));
+        return view('surat.show', compact(
+            'dataTemplate',
+            'fields',
+            'defaults',
+            'bodyTemplateRaw',
+            'fillable'
+        ));
     }
 
-    // =====================
-    // 3. SIMPAN SURAT KE TABEL FINAL
-    // =====================
     public function store(Request $request, $slug)
     {
-        // temukan template by slug
         $dataTemplate = TemplateSurat::where('slug', $slug)->firstOrFail();
-
-        // tentukan model final si surat
         $modelClass = $this->templateMap[$slug] ?? null;
+
         if (!$modelClass) {
             return back()->with('error', 'Model final surat belum dikonfigurasi.');
         }
 
-        // ambil fillable dari model
         $fillable = (new $modelClass)->getFillable();
 
-        // siapkan data untuk isi tabel final, ambil hanya field yang boleh diisi
+        // ambil hanya field yang ada di fillable
         $payload = $request->only($fillable);
 
-        // jika lampiran tidak dikirim, set otomatis dari template
+        // override otomatis (tidak boleh datang dari form)
+        $payload['user_id'] = Auth::id();
+
+        // nomor surat
+        $payload['nomor_surat'] = $payload['nomor_surat']
+            ?? $this->generateNomorSurat($dataTemplate->id);
+
+        // lampiran boleh kosong
         if (empty($payload['lampiran'])) {
-            $payload['lampiran'] = $dataTemplate->nama_template;
+            $payload['lampiran'] = '';
         }
 
-        // set ts_id nanti saat create final? tergantung struktur model final
-        // contoh model final mengharuskan ts_id diisi: jika iya, kita buat transaksi dulu, tapi sesuai flow lo di code awal:
+        // create final surat
         $suratFinal = $modelClass::create($payload);
 
-        // generate nomor surat final
-        $nomor = $this->generateNomorSurat($dataTemplate->id);
-
-        // simpan transaksi surat (sesuaikan kolom di TransaksiSurat)
-        TransaksiSurat::create([
+        // buat transaksi surat
+        $transaksi = TransaksiSurat::create([
             'template_surat_id' => $dataTemplate->id,
             'surat_id' => $suratFinal->id,
-            'nomor_surat' => $nomor,
+            'nomor_surat' => $payload['nomor_surat'],
             'tahun' => date('Y'),
         ]);
+
+        // update ts_id otomatis
+        if (in_array('ts_id', $fillable)) {
+            $suratFinal->update(['ts_id' => $transaksi->id]);
+        }
 
         return redirect()->route('surat.show', $dataTemplate->slug)
             ->with('success', 'Surat berhasil dibuat!');

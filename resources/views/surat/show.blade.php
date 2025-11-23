@@ -21,32 +21,35 @@
             <form id="suratForm" method="POST" action="{{ route('surat.store', $dataTemplate->slug) }}">
                 @csrf
 
-                {{-- tampilkan beberapa field default yg sering auto-prefill --}}
+                {{-- Nomor Surat --}}
                 <div class="mb-3">
                     <label class="block text-sm font-medium">Nomor Surat</label>
                     <input name="nomor_surat" type="text" value="{{ $defaults['nomor_surat'] }}"
-                        class="w-full border rounded p-2" />
+                        class="w-full border rounded p-2" readonly />
                 </div>
 
+                {{-- Lampiran --}}
                 <div class="mb-3">
                     <label class="block text-sm font-medium">Lampiran</label>
                     <input name="lampiran" type="text" value="{{ $defaults['lampiran'] }}"
                         class="w-full border rounded p-2" />
                 </div>
 
+                {{-- Perihal --}}
                 <div class="mb-3">
                     <label class="block text-sm font-medium">Perihal</label>
                     <input name="perihal" type="text" value="{{ $defaults['perihal'] }}"
-                        class="w-full border rounded p-2" />
+                        class="w-full border rounded p-2" readonly />
                 </div>
 
+                {{-- Tanggal Surat --}}
                 <div class="mb-3">
                     <label class="block text-sm font-medium">Tanggal Surat</label>
                     <input name="tgl_surat" type="date" value="{{ $defaults['tgl_surat'] }}"
                         class="w-full border rounded p-2" />
                 </div>
 
-                {{-- pimpinan (readonly, ambil dari template.pimpinan) --}}
+                {{-- Pimpinan (ga bisa diedit) --}}
                 <div class="mb-3">
                     <label class="block text-sm font-medium">Penandatangan (Nama)</label>
                     <input name="pimpinan_nama" type="text" value="{{ $defaults['pimpinan_nama'] }}"
@@ -82,23 +85,20 @@
         </div>
     </div>
 
-    {{-- JS: live rendering of template placeholders --}}
     <script>
         (function () {
             const rawTemplate = {!! json_encode($bodyTemplateRaw) !!};
 
-            // helper: ambil semua input values (form)
+            // ambil semua input values
             function gatherValues() {
                 const values = {};
 
-                // default prefilled fields (nomor, lampiran, perihal, pimpinan_x, tgl_surat)
                 const defaults = ['nomor_surat', 'lampiran', 'perihal', 'pimpinan_nama', 'pimpinan_jabatan', 'pimpinan_ttd', 'tgl_surat'];
                 defaults.forEach(k => {
                     const el = document.querySelector(`[name="${k}"]`);
                     if (el) values[k] = el.value;
                 });
 
-                // semua input lainnya
                 document.querySelectorAll('#suratForm [name]').forEach(inp => {
                     values[inp.name] = inp.value;
                 });
@@ -106,44 +106,54 @@
                 return values;
             }
 
-            // render function: replace placeholder  with values
+            // RENDER TEMPLATE
             function renderTemplate(values) {
-                // clone rawTemplate to avoid mutating original
                 let out = rawTemplate;
 
-                // replace all placeholders like key
-                out = out.replace(new RegExp('\\{\\{\\s*([a-zA-Z0-9_]+)\\s*\\}\\}', 'g'), function (match, key) {
-                    // `key` here is the first capture group
+                out = out.replace(/\{\{\s*([a-zA-Z0-9_]+)\s*\}\}/g, function (match, key) {
+
+                    // ⛔ kondisi khusus: render TTD sebagai <img>
+                    if (key === 'pimpinan_ttd') {
+
+                        if (!values[key]) return '';
+
+                        // Gunakan path folder public/assets/img/
+                        const ttdPath = `/assets/img/${values[key]}`;
+                        console.log(ttdPath);
+
+                        return `<img src="${ttdPath}" alt="TTD" style="width:150px; height:auto;">`;
+                    }
+
+                    // default text replacement
                     return (values[key] !== undefined && values[key] !== null) ? values[key] : '';
                 });
 
                 return out;
             }
 
-            // initial render with defaults from server
+            // initial render
             document.addEventListener('DOMContentLoaded', function () {
                 const initialValues = {};
-                // populate initial values from server-provided defaults object
                 const serverDefaults = {!! json_encode($defaults) !!};
+
                 Object.assign(initialValues, serverDefaults);
 
-                // also set form values to defaults (ensures UI matches)
+                // set form default values
                 for (const k in serverDefaults) {
                     const el = document.querySelector(`[name="${k}"]`);
                     if (el) el.value = serverDefaults[k];
                 }
 
-                const previewEl = document.getElementById('suratPreview');
-                previewEl.innerHTML = renderTemplate(initialValues);
+                document.getElementById('suratPreview').innerHTML = renderTemplate(initialValues);
             });
 
-            // preview button listener
+            // preview button
             document.getElementById('previewBtn').addEventListener('click', function () {
                 const values = gatherValues();
                 document.getElementById('suratPreview').innerHTML = renderTemplate(values);
             });
 
-            // optional: live update while typing (debounced)
+            // live update
             let timer;
             document.getElementById('suratForm').addEventListener('input', function () {
                 clearTimeout(timer);
@@ -155,4 +165,5 @@
 
         })();
     </script>
+
 </x-app-layout>

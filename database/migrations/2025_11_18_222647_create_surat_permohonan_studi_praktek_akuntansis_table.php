@@ -13,15 +13,15 @@ return new class extends Migration {
         Schema::create('surat_permohonan_studi_praktek_akuntansis', function (Blueprint $table) {
             $table->id();
 
-            // Relasi ke transaksi_surats
-            $table->unsignedBigInteger('ts_id');
+            // Relasi ke transaksi_surats (nullable, karena diisi belakangan)
+            $table->unsignedBigInteger('ts_id')->nullable();
             $table->foreign('ts_id')
                 ->references('id')
                 ->on('transaksi_surats')
                 ->cascadeOnDelete();
 
-            // user_id setelah ts_id
-            $table->unsignedBigInteger('user_id');
+            // user_id
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users')

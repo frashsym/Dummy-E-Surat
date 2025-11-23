@@ -10,6 +10,8 @@ class TemplateSurat extends Model
         'jenis_surat_id',
         'nama_template',
         'slug',
+        'kop_surat',
+        'body_template',
     ];
 
     public function getRouteKeyName()

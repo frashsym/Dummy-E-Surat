@@ -23,7 +23,9 @@ class SuratPermohonanIzinPenelitian extends Model
         'prodi_konsen',
         'no_hp',
         'dosen_kolab',
+        'topik_penelitian',
         'tmpt_penelitian',
+        'tgl_surat',
     ];
 
     /**

@@ -16,6 +16,7 @@ class SuratPengunduranDiri extends Model
         'tingkat_semester',
         'prodi',
         'nama_ortu',
+        'tgl_surat',
     ];
 
     public function transaksiSurat()

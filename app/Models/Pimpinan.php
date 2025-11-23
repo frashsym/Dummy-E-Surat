@@ -22,4 +22,10 @@ class Pimpinan extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function templateSurats()
+    {
+        return $this->hasMany(TemplateSurat::class, 'pimpinan_id');
+    }
+
 }

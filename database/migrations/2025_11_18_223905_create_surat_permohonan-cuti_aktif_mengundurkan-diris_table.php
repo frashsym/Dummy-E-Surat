@@ -36,6 +36,7 @@ return new class extends Migration {
             $table->string('thn_akademik');
             $table->text('alasan')->nullable();
             $table->string('nama_ortu')->nullable();
+            $table->date('tgl_surat');
 
             $table->timestamps();
         });

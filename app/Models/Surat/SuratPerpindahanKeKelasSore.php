@@ -24,6 +24,7 @@ class SuratPerpindahanKeKelasSore extends Model
         'semester',
         'thn_akademik',
         'alasan',
+        'tgl_surat',
     ];
 
     public function transaksiSurat()

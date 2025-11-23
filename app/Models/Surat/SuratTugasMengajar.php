@@ -16,6 +16,7 @@ class SuratTugasMengajar extends Model
         'prodi',
         'thn_akademik',
         'semester',
+        'tgl_surat',
     ];
 
     public function transaksiSurat()

@@ -23,6 +23,8 @@ class SuratKeteranganMasihKuliah extends Model
         'prodi',
         'tingkat_semester',
         'thn_akademik',
+        'keperluan',
+        'tgl_surat',
     ];
 
     public function transaksiSurat()

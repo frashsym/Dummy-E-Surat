@@ -27,7 +27,7 @@
             @endif
 
             {{-- Tombol Tambah User - hanya muncul jika role user login adalah admin/superadmin --}}
-            @if(in_array(auth()->user()->role_id, [1, 2]))
+            @if(auth()->check() && in_array(auth()->user()->role_id, [1, 2]))
                 <div class="flex justify-end mb-4">
                     <button onclick="openModal()"
                         class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md flex items-center gap-2 transition">
@@ -85,7 +85,7 @@
 
 
                             {{-- Tombol Edit & Hapus → hanya admin (1) dan operator (2) --}}
-                            @if(in_array(auth()->user()->role_id, [1, 2]))
+                            @if(auth()->check() && in_array(auth()->user()->role_id, [1, 2]))
                                 <div class="mt-3 flex gap-2">
                                     <button onclick="openModal({{ $user }})"
                                         class="px-3 py-1 bg-yellow-500 hover:bg-yellow-600 text-white rounded text-sm">

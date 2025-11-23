@@ -44,6 +44,7 @@ return new class extends Migration {
             $table->string('nip_nrp_nik')->nullable();
             $table->string('pangkat_gol_ruang')->nullable();
             $table->string('instansi_perusahaan')->nullable();
+            $table->date('tgl_surat');
 
             $table->timestamps();
         });

@@ -36,7 +36,9 @@ return new class extends Migration {
             $table->string('prodi_konsen');
             $table->string('no_hp');
             $table->string('dosen_kolab')->nullable();
+            $table->string('topik_penelitian');
             $table->string('tmpt_penelitian');
+            $table->date('tgl_surat');
 
             $table->timestamps();
         });

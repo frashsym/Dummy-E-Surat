@@ -29,6 +29,7 @@ return new class extends Migration {
             $table->string('npm');
             $table->string('tingkat_semester');
             $table->string('prodi');
+            $table->date('tgl_surat');
             $table->timestamps();
 
         });

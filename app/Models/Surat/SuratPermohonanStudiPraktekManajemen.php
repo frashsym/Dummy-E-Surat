@@ -24,6 +24,7 @@ class SuratPermohonanStudiPraktekManajemen extends Model
         'tingkat_semester',
         'konsentrasi',
         'no_hp',
+        'tgl_surat',
     ];
 
     public function transaksiSurat()

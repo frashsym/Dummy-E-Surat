@@ -21,6 +21,11 @@ class SuratPermohonanPindahKuliah extends Model
         'fakultas',
         'no_hp',
         'nama_ortu',
+        'univ_tujuan',
+        'fak_tujuan',
+        'prod_tujuan',
+        'thn_akademik',
+        'tgl_surat',
     ];
 
     public function transaksiSurat()

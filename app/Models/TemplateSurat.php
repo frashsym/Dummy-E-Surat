@@ -26,4 +26,9 @@ class TemplateSurat extends Model
     {
         return $this->hasMany(TransaksiSurat::class, 'template_surat_id');
     }
+
+    public function pimpinan()
+    {
+        return $this->belongsTo(Pimpinan::class, 'pimpinan_id');
+    }
 }

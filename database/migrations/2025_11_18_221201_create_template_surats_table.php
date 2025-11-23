@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->string('nama_template');
             $table->string('slug');
             $table->string('kop_surat')->nullable();
-            $table->text('body_template');
+            $table->text('body_template')->nullable();
             $table->timestamps();
         });
     }

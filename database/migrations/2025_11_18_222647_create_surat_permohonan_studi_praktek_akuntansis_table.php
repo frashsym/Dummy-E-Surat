@@ -37,6 +37,7 @@ return new class extends Migration {
             $table->string('tingkat_semester');
             $table->string('konsentrasi');
             $table->string('no_hp');
+            $table->date('tgl_surat');
 
             $table->timestamps();
         });

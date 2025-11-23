@@ -23,8 +23,7 @@ class PimpinanSeeder extends Seeder
         Pimpinan::create([
             'user_id'  => 4,
             'nip'      => '198003052023121002',
-            'jabatan'  => 'Wakil Dekan',
-            'wd' => 1,
+            'jabatan'  => 'Wakil Dekan I',
             'fakultas' => 'Teknik',
             'prodi'    => 'Informatika',
             'ttd'      => null,

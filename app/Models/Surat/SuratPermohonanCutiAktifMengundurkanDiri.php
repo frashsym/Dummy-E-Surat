@@ -25,6 +25,7 @@ class SuratPermohonanCutiAktifMengundurkanDiri extends Model
         'thn_akademik',
         'alasan',
         'nama_ortu',
+        'tgl_surat',
     ];
 
     public function transaksiSurat()

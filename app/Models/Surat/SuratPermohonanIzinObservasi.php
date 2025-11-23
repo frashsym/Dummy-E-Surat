@@ -24,6 +24,7 @@ class SuratPermohonanIzinObservasi extends Model
         'prodi',
         'no_hp',
         'dosen_pembimbing',
+        'tgl_surat',
     ];
 
     public function transaksiSurat()

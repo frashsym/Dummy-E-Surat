@@ -18,6 +18,7 @@ class SuratUjianSusulanMatkul extends Model
         'tingkat_semester',
         'prodi',
         'matkul',
+        'tgl_surat',
     ];
 
     public function transaksiSurat()

@@ -28,6 +28,7 @@ class SuratKeteranganMasihKuliahOrtuDetail extends Model
         'nip_nrp_nik',
         'pangkat_gol_ruang',
         'instansi_perusahaan',
+        'tgl_surat',
     ];
 
     public function transaksiSurat()

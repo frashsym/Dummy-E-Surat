@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\TemplateSurat;
 use App\Models\TransaksiSurat;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class SuratController extends Controller
 {
@@ -36,19 +37,22 @@ class SuratController extends Controller
     // =====================
     // 2. TAMPILKAN TEMPLATE TERPILIH
     // =====================
-    public function show($template)
+    public function show($slug)
     {
-        $dataTemplate = TemplateSurat::where('slug', $template)->firstOrFail();
+        // ambil template berdasarkan slug
+        $dataTemplate = TemplateSurat::with('pimpinan')->where('slug', $slug)->firstOrFail();
 
-        // tentukan model target tabel final
-        $model = $this->templateMap[$dataTemplate->slug] ?? null;
-        if (!$model) {
-            abort(404, "Template surat tidak ditemukan.");
+        // tentukan model target tabel final (assume keys di $templateMap pakai slug)
+        $modelClass = $this->templateMap[$slug] ?? null;
+        if (!$modelClass) {
+            // kalau lo tidak ingin pakai model mapping, tetap generate fields dari contoh model:
+            // abort(404, "Template surat tidak ditemukan.");
+            $fillable = []; // kosong: form dinamis nanti dari $_templateModel atau manual
+        } else {
+            $fillable = (new $modelClass)->getFillable();
         }
 
-        // ambil field dari model final
-        $fillable = (new $model)->getFillable();
-
+        // siapkan fields array untuk form (mirip versi sebelumnya)
         $fields = [];
         foreach ($fillable as $f) {
             $fields[] = [
@@ -58,31 +62,61 @@ class SuratController extends Controller
             ];
         }
 
-        return view('surat.show', compact('template', 'dataTemplate', 'fields'));
+        // default values (prefill)
+        $defaultNomor = $this->generateNomorSurat($dataTemplate->id);
+        $defaultLampiran = $dataTemplate->nama_template;
+        $defaultPerihal = $dataTemplate->nama_template; // atau $dataTemplate->perihal jika ada
+        $pimpinan = $dataTemplate->pimpinan; // hasOne relation to pimpinans
+
+        $defaults = [
+            'nomor_surat' => $defaultNomor,
+            'lampiran' => $defaultLampiran,
+            'perihal' => $defaultPerihal,
+            'pimpinan_nama' => $pimpinan->nama ?? '',
+            'pimpinan_jabatan' => $pimpinan->jabatan ?? '',
+            'pimpinan_ttd' => $pimpinan->ttd ?? '',
+            'tgl_surat' => Carbon::now()->toDateString(),
+        ];
+
+        // pass juga body_template mentah supaya JS bisa render live preview
+        $bodyTemplateRaw = $dataTemplate->body_template;
+
+        return view('surat.show', compact('dataTemplate', 'fields', 'defaults', 'bodyTemplateRaw', 'fillable'));
     }
 
     // =====================
     // 3. SIMPAN SURAT KE TABEL FINAL
     // =====================
-    public function store(Request $request, $template)
+    public function store(Request $request, $slug)
     {
-        $dataTemplate = TemplateSurat::where('nama_template', $template)->firstOrFail();
+        // temukan template by slug
+        $dataTemplate = TemplateSurat::where('slug', $slug)->firstOrFail();
 
-        // dapatkan model final
-        $model = $this->templateMap[$template] ?? null;
-        if (!$model) {
-            abort(404, "Model final surat tidak ditemukan.");
+        // tentukan model final si surat
+        $modelClass = $this->templateMap[$slug] ?? null;
+        if (!$modelClass) {
+            return back()->with('error', 'Model final surat belum dikonfigurasi.');
         }
 
-        // simpan ke tabel surat final
-        $suratFinal = $model::create(
-            $request->only((new $model)->getFillable())
-        );
+        // ambil fillable dari model
+        $fillable = (new $modelClass)->getFillable();
 
-        // generate nomor surat otomatis
+        // siapkan data untuk isi tabel final, ambil hanya field yang boleh diisi
+        $payload = $request->only($fillable);
+
+        // jika lampiran tidak dikirim, set otomatis dari template
+        if (empty($payload['lampiran'])) {
+            $payload['lampiran'] = $dataTemplate->nama_template;
+        }
+
+        // set ts_id nanti saat create final? tergantung struktur model final
+        // contoh model final mengharuskan ts_id diisi: jika iya, kita buat transaksi dulu, tapi sesuai flow lo di code awal:
+        $suratFinal = $modelClass::create($payload);
+
+        // generate nomor surat final
         $nomor = $this->generateNomorSurat($dataTemplate->id);
 
-        // simpan transaksi surat
+        // simpan transaksi surat (sesuaikan kolom di TransaksiSurat)
         TransaksiSurat::create([
             'template_surat_id' => $dataTemplate->id,
             'surat_id' => $suratFinal->id,
@@ -90,7 +124,8 @@ class SuratController extends Controller
             'tahun' => date('Y'),
         ]);
 
-        return redirect()->route('surat.index')->with('success', 'Surat berhasil dibuat!');
+        return redirect()->route('surat.show', $dataTemplate->slug)
+            ->with('success', 'Surat berhasil dibuat!');
     }
 
     // =====================

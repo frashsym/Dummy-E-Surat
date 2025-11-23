@@ -29,9 +29,13 @@ return new class extends Migration {
             $table->string('nama_mhs');
             $table->string('npm');
             $table->string('prodi');
-            $table->string('fakultas')->nullable();
-            $table->string('no_hp')->nullable();
-            $table->string('nama_ortu')->nullable();
+            $table->string('fakultas');
+            $table->string('no_hp');
+            $table->string('nama_ortu');
+            $table->string('univ_tujuan');
+            $table->string('fak_tujuan');
+            $table->string('prod_tujuan');
+            $table->date('tgl_surat');
 
             $table->timestamps();
         });

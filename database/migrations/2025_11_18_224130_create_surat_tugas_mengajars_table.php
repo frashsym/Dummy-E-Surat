@@ -27,6 +27,7 @@ return new class extends Migration {
             $table->string('prodi');
             $table->string('thn_akademik');
             $table->string('semester');
+            $table->date('tgl_surat');
             $table->timestamps();
 
         });

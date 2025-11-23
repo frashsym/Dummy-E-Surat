@@ -25,6 +25,7 @@ class SuratPermohonanStudiPraktekAkuntansi extends Model
         'tingkat_semester',
         'konsentrasi',
         'no_hp',
+        'tgl_surat',
     ];
 
     /**

@@ -17,6 +17,7 @@ class SuratUjianSusulan extends Model
         'npm',
         'tingkat_semester',
         'prodi',
+        'tgl_surat',
     ];
 
     public function transaksiSurat()

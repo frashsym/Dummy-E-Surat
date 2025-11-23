@@ -28,6 +28,7 @@ return new class extends Migration {
             $table->string('tingkat_semester');
             $table->string('prodi');
             $table->string('nama_ortu');
+            $table->date('tgl_surat');
             $table->timestamps();
         });
     }

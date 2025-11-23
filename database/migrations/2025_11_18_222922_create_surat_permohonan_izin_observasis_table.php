@@ -34,6 +34,7 @@ return new class extends Migration {
             $table->string('prodi');
             $table->string('no_hp');
             $table->string('dosen_pembimbing');
+            $table->date('tgl_surat');
 
             $table->timestamps();
         });

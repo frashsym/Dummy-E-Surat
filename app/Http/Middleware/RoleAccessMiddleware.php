@@ -11,49 +11,45 @@ class RoleAccessMiddleware
     public function handle(Request $request, Closure $next, $roleType = null): Response
     {
         $user = $request->user();
+
+        // belum login → ke home
         if (!$user) {
-            abort(403, 'Unauthorized');
+            return redirect('/');
         }
 
         $roleName = optional($user->role)->nama_role;
 
-        // ROLE GROUPING
         $superadminOnly = ['Superadmin'];
-        $adminRoles     = ['Superadmin', 'Administrator'];
-        $userRoles      = ['Superadmin', 'Administrator', 'Pimpinan', 'Prodi', 'Dosen', 'Mahasiswa'];
+        $adminRoles = ['Superadmin', 'Admin'];
+        $userRoles = ['Superadmin', 'Admin', 'Pimpinan', 'Prodi', 'Dosen', 'Mahasiswa'];
 
-        // ============ ROLE LOGIC ============
-
-        // superadmin → bypass semua
+        // Superadmin bypass semua
         if ($roleName === 'Superadmin') {
             return $next($request);
         }
 
-        // superadmin only routes
+        // Superadmin only
         if ($roleType === 'superadmin') {
-            if (!in_array($roleName, $superadminOnly)) {
-                abort(403, 'Hanya Superadmin.');
-            }
-            return $next($request);
+            return in_array($roleName, $superadminOnly)
+                ? $next($request)
+                : redirect('/');
         }
 
-        // admin routes (superadmin + administrator)
+        // Admin area
         if ($roleType === 'admin') {
-            if (!in_array($roleName, $adminRoles)) {
-                abort(403, 'Hanya Admin.');
-            }
-            return $next($request);
+            return in_array($roleName, $adminRoles)
+                ? $next($request)
+                : redirect('/');
         }
 
-        // user routes
+        // User area
         if ($roleType === 'user') {
-            if (!in_array($roleName, $userRoles)) {
-                abort(403, 'Hanya User.');
-            }
-            return $next($request);
+            return in_array($roleName, $userRoles)
+                ? $next($request)
+                : redirect('/');
         }
 
-        // tanpa parameter → lolos
+        // default
         return $next($request);
     }
 }

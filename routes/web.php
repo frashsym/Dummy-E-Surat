@@ -6,51 +6,73 @@ use App\Http\Controllers\IndexController;
 use App\Http\Controllers\SuratController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\DashboardController;
 
+/*
+|--------------------------------------------------------------------------
+| PUBLIC ROUTES
+|--------------------------------------------------------------------------
+*/
 Route::get('/', [IndexController::class, 'index'])->name('index');
 Route::get('/staff', [UserController::class, 'index'])->name('user.index');
 
-
+/*
+|--------------------------------------------------------------------------
+| AUTHENTICATED ROUTES
+|--------------------------------------------------------------------------
+*/
 Route::middleware(['auth', 'verified'])->group(function () {
 
-    Route::get('/dashboard', [AdminController::class, 'index'])
-        ->name('dashboard');
+    /*
+    |--------------------------------------------------------------------------
+    | ADMIN AREA (SUPERADMIN + ADMIN)
+    |--------------------------------------------------------------------------
+    */
+    Route::middleware('role:admin')->group(function () {
 
-    // ================= ROLE MANAGEMENT (Hanya Superadmin) =================
-    Route::resource('/role', RoleController::class)
-        ->middleware('role:superadmin')
-        ->names([
-            'index' => 'role.index',
-            'store' => 'role.store',
-            'show' => 'role.show',
-            'update' => 'role.update',
-            'destroy' => 'role.destroy',
-        ]);
+        Route::get('/dashboard', [DashboardController::class, 'index'])
+            ->name('admin.dashboard');
 
-    // ================= SURAT AREA (Dipakai admin & user) =================
+        // STAFF MANAGEMENT
+        Route::resource('/staff', UserController::class)
+            ->only(['store', 'update', 'destroy']);
+    });
+
+    /*
+    |--------------------------------------------------------------------------
+    | SUPERADMIN ONLY
+    |--------------------------------------------------------------------------
+    */
+    Route::middleware('role:superadmin')->group(function () {
+
+        Route::resource('/role', RoleController::class)
+            ->names([
+                'index' => 'role.index',
+                'store' => 'role.store',
+                'show' => 'role.show',
+                'update' => 'role.update',
+                'destroy' => 'role.destroy',
+            ]);
+    });
+
+    /*
+    |--------------------------------------------------------------------------
+    | SURAT AREA (SEMUA USER LOGIN)
+    |--------------------------------------------------------------------------
+    */
     Route::prefix('surat')->group(function () {
 
         Route::get('/', [SuratController::class, 'index'])->name('surat.index');
-
         Route::get('/{template:slug}', [SuratController::class, 'show'])->name('surat.show');
         Route::post('/{template:slug}', [SuratController::class, 'store'])->name('surat.store');
     });
-
-    // ================= STAFF MANAGEMENT KHUSUS ADMIN =================
-    Route::resource('/staff', UserController::class)
-        ->only(['store', 'update', 'destroy'])
-        ->middleware('role:admin');
-
-
-    // Route::post('/notifications/read', function () {
-    //     Auth::user()->unreadNotifications->markAsRead();
-    //     return back();
-    // })->name('notifications.read');
-
 });
 
-// PROFILE
+/*
+|--------------------------------------------------------------------------
+| PROFILE
+|--------------------------------------------------------------------------
+*/
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

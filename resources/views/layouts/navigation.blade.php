@@ -2,18 +2,35 @@
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
+
+            @php
+                $user = auth()->user();
+                $isSuperadmin = auth()->check() && auth()->user()->role_id === 1;
+                $isAdmin = auth()->check() && in_array(auth()->user()->role_id, [1, 2]);
+
+                $navRoute = $isAdmin
+                    ? route('admin.dashboard')
+                    : route('index');
+
+                $navLabel = $isAdmin
+                    ? __('Dashboard')
+                    : __('Home');
+            @endphp
+
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
+                    <a href="{{ route('index') }}">
                         <img src="{{ asset('favicon.ico') }}" alt="Logo" class="block h-9 w-auto">
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('index')" :active="request()->routeIs('index')">
-                        {{ __('Home') }}
+                    <x-nav-link :href="$navRoute" :active="$isAdmin
+        ? request()->routeIs('admin.dashboard')
+        : request()->routeIs('index')">
+                        {{ $navLabel }}
                     </x-nav-link>
                 </div>
 
@@ -24,127 +41,142 @@
                 </div>
 
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link href="{{ url('/#layanan') }}">
-                        {{ __('Layanan') }}
+
+                    {{-- ADMIN (Superadmin & Admin) --}}
+                    @if ($isAdmin)
+                        <x-nav-link :href="route('surat.index')" :active="request()->routeIs('surat.*')">
+                            {{ __('Surat') }}
+                        </x-nav-link>
+
+                        {{-- USER BIASA --}}
+                    @else
+                        <x-nav-link href="{{ url('/#layanan') }}">
+                            {{ __('Layanan') }}
+                        </x-nav-link>
+                    @endif
+
+            </div>
+
+            {{-- Role Management (Superadmin only) --}}
+            <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                @if ($isSuperadmin)
+                    <x-nav-link :href="route('role.index')" :active="request()->routeIs('role.*')">
+                        {{ __('Role') }}
                     </x-nav-link>
-                </div>
+                @endif
+            </div>
 
-                {{-- <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('surat.index')" :active="request()->routeIs('user.surat.index')">
-                        {{ __('Surat') }}
-                    </x-nav-link>
-                </div> --}}
 
-                {{-- <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex" x-data="{ openNotif: false }">
+            {{-- <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex" x-data="{ openNotif: false }">
 
-                    <!-- Icon Lonceng -->
-                    <button @click="openNotif = !openNotif" class="relative">
-                        <!-- Icon bell -->
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="w-7 h-7">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M14.857 17.657A2.99 2.99 0 0112 19.5c-1.14 0-2.158-.635-2.857-1.843M6 8.25a6 6 0 1112 0c0 3.89 1 6 1.5 6.75H4.5C5 14.25 6 12.14 6 8.25z" />
-                        </svg>
+                <!-- Icon Lonceng -->
+                <button @click="openNotif = !openNotif" class="relative">
+                    <!-- Icon bell -->
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="w-7 h-7">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M14.857 17.657A2.99 2.99 0 0112 19.5c-1.14 0-2.158-.635-2.857-1.843M6 8.25a6 6 0 1112 0c0 3.89 1 6 1.5 6.75H4.5C5 14.25 6 12.14 6 8.25z" />
+                    </svg>
 
-                        <!-- Badge -->
-                        @if(Auth::user()->unreadNotifications->count() > 0)
-                            <span class="absolute -top-1 -right-1 bg-red-600 text-white text-xs px-2 py-0.5 rounded-full">
-                                {{ Auth::user()->unreadNotifications->count() }}
-                            </span>
-                        @endif
-                    </button> --}}
+                    <!-- Badge -->
+                    @if(Auth::user()->unreadNotifications->count() > 0)
+                    <span class="absolute -top-1 -right-1 bg-red-600 text-white text-xs px-2 py-0.5 rounded-full">
+                        {{ Auth::user()->unreadNotifications->count() }}
+                    </span>
+                    @endif
+                </button> --}}
 
-                    <!-- Dropdown Notifikasi -->
-                    {{-- <div x-show="openNotif" @click.outside="openNotif = false"
-                        class="absolute right-10 mt-10 w-80 bg-white shadow-lg rounded-lg p-4 z-50 max-h-96 overflow-y-auto">
+                <!-- Dropdown Notifikasi -->
+                {{-- <div x-show="openNotif" @click.outside="openNotif = false"
+                    class="absolute right-10 mt-10 w-80 bg-white shadow-lg rounded-lg p-4 z-50 max-h-96 overflow-y-auto">
 
-                        <h3 class="font-semibold mb-2">Notifikasi</h3>
+                    <h3 class="font-semibold mb-2">Notifikasi</h3>
 
-                        @forelse(Auth::user()->unreadNotifications as $notif)
-                            <div class="p-3 mb-2 bg-gray-100 rounded-lg hover:bg-gray-200 cursor-pointer">
+                    @forelse(Auth::user()->unreadNotifications as $notif)
+                    <div class="p-3 mb-2 bg-gray-100 rounded-lg hover:bg-gray-200 cursor-pointer">
 
-                                <div class="text-sm text-gray-800">
-                                    {{ $notif->data['message'] }}
-                                </div>
-
-                                <div class="text-xs text-gray-500 mt-1">
-                                    Perihal: <b>{{ $notif->data['perihal'] ?? '-' }}</b>
-                                </div>
-
-                                <div class="text-xs text-gray-400 mt-1">
-                                    {{ $notif->created_at->diffForHumans() }}
-                                </div>
-
-                            </div>
-                        @empty
-                            <p class="text-sm text-gray-500 text-center py-2">Tidak ada notifikasi baru</p>
-                        @endforelse
-
-                        <div class="mt-2 text-right">
-                            <form action="{{ route('notifications.read') }}" method="POST">
-                                @csrf
-                                <button class="text-blue-600 text-sm hover:underline">Tandai semua dibaca</button>
-                            </form>
+                        <div class="text-sm text-gray-800">
+                            {{ $notif->data['message'] }}
                         </div>
 
-                    </div> --}}
-                {{-- </div> --}}
+                        <div class="text-xs text-gray-500 mt-1">
+                            Perihal: <b>{{ $notif->data['perihal'] ?? '-' }}</b>
+                        </div>
 
-            </div>
+                        <div class="text-xs text-gray-400 mt-1">
+                            {{ $notif->created_at->diffForHumans() }}
+                        </div>
 
-            @auth
-                <!-- Settings Dropdown -->
-                <div class="hidden sm:flex sm:items-center sm:ms-6">
-                    <x-dropdown align="right" width="48">
-                        <x-slot name="trigger">
-                            <button
-                                class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
-                                <div>{{ optional(Auth::user())->name }}</div>
+                    </div>
+                    @empty
+                    <p class="text-sm text-gray-500 text-center py-2">Tidak ada notifikasi baru</p>
+                    @endforelse
 
-                                <div class="ms-1">
-                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd"
-                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                </div>
-                            </button>
-                        </x-slot>
+                    <div class="mt-2 text-right">
+                        <form action="{{ route('notifications.read') }}" method="POST">
+                            @csrf
+                            <button class="text-blue-600 text-sm hover:underline">Tandai semua dibaca</button>
+                        </form>
+                    </div>
 
-                        <x-slot name="content">
-                            <x-dropdown-link :href="route('profile.edit')">
-                                {{ __('Profile') }}
-                            </x-dropdown-link>
+                </div> --}}
+                {{--
+            </div> --}}
 
-                            <!-- Authentication -->
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
-
-                                <x-dropdown-link :href="route('logout')" onclick="event.preventDefault();
-                                                                this.closest('form').submit();">
-                                    {{ __('Log Out') }}
-                                </x-dropdown-link>
-                            </form>
-                        </x-slot>
-                    </x-dropdown>
-                </div>
-            @endauth
-
-            <!-- Hamburger -->
-            <div class="-me-2 flex items-center sm:hidden">
-                <button @click="open = ! open"
-                    class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out">
-                    <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                        <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex"
-                            stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 6h16M4 12h16M4 18h16" />
-                        <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round"
-                            stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>
         </div>
+
+        @auth
+            <!-- Settings Dropdown -->
+            <div class="hidden sm:flex sm:items-center sm:ms-6">
+                <x-dropdown align="right" width="48">
+                    <x-slot name="trigger">
+                        <button
+                            class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
+                            <div>{{ optional(Auth::user())->name }}</div>
+
+                            <div class="ms-1">
+                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                        </button>
+                    </x-slot>
+
+                    <x-slot name="content">
+                        <x-dropdown-link :href="route('profile.edit')">
+                            {{ __('Profile') }}
+                        </x-dropdown-link>
+
+                        <!-- Authentication -->
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+
+                            <x-dropdown-link :href="route('logout')"
+                                onclick="event.preventDefault();
+                                                                                                    this.closest('form').submit();">
+                                {{ __('Log Out') }}
+                            </x-dropdown-link>
+                        </form>
+                    </x-slot>
+                </x-dropdown>
+            </div>
+        @endauth
+
+        <!-- Hamburger -->
+        <div class="-me-2 flex items-center sm:hidden">
+            <button @click="open = ! open"
+                class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out">
+                <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                    <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+    </div>
     </div>
 
     <!-- Responsive Navigation Menu -->

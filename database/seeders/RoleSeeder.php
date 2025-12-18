@@ -20,7 +20,7 @@ class RoleSeeder extends Seeder
                 'updated_at' => Carbon::now(),
             ],
             [
-                'nama_role' => 'Administrator',
+                'nama_role' => 'Admin',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
@@ -30,7 +30,7 @@ class RoleSeeder extends Seeder
                 'updated_at' => Carbon::now(),
             ],
             [
-                'nama_role' => 'Prodi',
+                'nama_role' => 'Kaprodi',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],

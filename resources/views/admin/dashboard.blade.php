@@ -29,6 +29,66 @@
         </div>
     </div>
 
+    {{-- Summary Cards --}}
+    <div class="px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+            {{-- Total Surat --}}
+            <div class="bg-white dark:bg-gray-900
+        border border-gray-200 dark:border-white/10
+        shadow-sm dark:shadow-lg dark:shadow-black/40
+        rounded-2xl p-6">
+                <p class="text-sm text-gray-500 dark:text-gray-400">
+                    Total Surat Bulan Ini
+                </p>
+                <h3 class="text-3xl font-bold text-gray-800 dark:text-white mt-2">
+                    {{ $totalSurat }}
+                </h3>
+            </div>
+
+            {{-- Surat Baru --}}
+            <div class="bg-white dark:bg-gray-900
+        border border-gray-200 dark:border-blue-500/30
+        shadow-sm dark:shadow-lg dark:shadow-black/40
+        rounded-2xl p-6">
+                <p class="text-sm text-gray-500 dark:text-gray-400">
+                    Surat Baru
+                </p>
+                <h3 class="text-3xl font-bold text-blue-600 dark:text-blue-400 mt-2">
+                    {{ $suratBaru }}
+                </h3>
+            </div>
+
+            {{-- Surat Acc --}}
+            <div class="bg-white dark:bg-gray-900
+        border border-gray-200 dark:border-green-500/30
+        shadow-sm dark:shadow-lg dark:shadow-black/40
+        rounded-2xl p-6">
+                <p class="text-sm text-gray-500 dark:text-gray-400">
+                    Surat Disetujui
+                </p>
+                <h3 class="text-3xl font-bold text-green-600 dark:text-green-400 mt-2">
+                    {{ $suratAcc }}
+                </h3>
+            </div>
+
+            {{-- Surat Cancel --}}
+            <div class="bg-white dark:bg-gray-900
+        border border-gray-200 dark:border-red-500/30
+        shadow-sm dark:shadow-lg dark:shadow-black/40
+        rounded-2xl p-6">
+                <p class="text-sm text-gray-500 dark:text-gray-400">
+                    Surat Ditolak
+                </p>
+                <h3 class="text-3xl font-bold text-red-600 dark:text-red-400 mt-2">
+                    {{ $suratCancel }}
+                </h3>
+            </div>
+
+        </div>
+    </div>
+    <br>
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>

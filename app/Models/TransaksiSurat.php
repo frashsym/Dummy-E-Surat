@@ -12,6 +12,7 @@ class TransaksiSurat extends Model
         'surat_id',
         'nomor_surat',
         'tahun',
+        'status',
     ];
     protected static function boot()
     {

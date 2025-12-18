@@ -19,7 +19,7 @@ class SuratBaruNotification extends Notification
 
     public function via($notifiable)
     {
-        return ['database']; // simpan ke tabel notifications
+        return ['database']; // simpan di tabel notifications
     }
 
     public function toDatabase($notifiable)
@@ -27,8 +27,8 @@ class SuratBaruNotification extends Notification
         return [
             'message' => 'Surat baru telah dibuat oleh ' . Auth::user()->name,
             'surat_id' => $this->surat->id,
-            'perihal' => $this->surat->perihal,
-            'user' => Auth::user()->name,
+            'perihal' => $this->surat->perihal ?? '-', // supaya aman kalau ga ada field perihal
+            'created_by' => Auth::id(),
         ];
     }
 }

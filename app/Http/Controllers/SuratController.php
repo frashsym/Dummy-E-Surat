@@ -5,6 +5,8 @@ use App\Models\TemplateSurat;
 use App\Models\TransaksiSurat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+// use App\Notifications\SuratBaruNotification;5ew
 use Carbon\Carbon;
 
 class SuratController extends Controller
@@ -141,6 +143,13 @@ class SuratController extends Controller
         if (in_array('ts_id', $fillable)) {
             $suratFinal->update(['ts_id' => $transaksi->id]);
         }
+
+        // kirim notifikasi ke semua user role kaprodi (role_id = 4)
+        // $kaprodiUsers = User::where('role_id', 4)->get();
+
+        // foreach ($kaprodiUsers as $kaprodi) {
+        //     $kaprodi->notify(new SuratBaruNotification($suratFinal));
+        // }
 
         return redirect()->route('surat.show', $dataTemplate->slug)
             ->with('success', 'Surat berhasil dibuat!');

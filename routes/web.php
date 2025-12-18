@@ -6,6 +6,7 @@ use App\Http\Controllers\IndexController;
 use App\Http\Controllers\SuratController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Admin\AdminController;
 
 Route::get('/', [IndexController::class, 'index'])->name('index');
 Route::get('/staff', [UserController::class, 'index'])->name('user.index');
@@ -13,9 +14,8 @@ Route::get('/staff', [UserController::class, 'index'])->name('user.index');
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
-    Route::get('/dashboard', function () {
-        return redirect('/');
-    })->name('dashboard');
+    Route::get('/dashboard', [AdminController::class, 'index'])
+        ->name('dashboard');
 
     // ================= ROLE MANAGEMENT (Hanya Superadmin) =================
     Route::resource('/role', RoleController::class)

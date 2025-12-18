@@ -20,6 +20,8 @@ return new class extends Migration {
 
             $table->string('nomor_surat');
             $table->integer('tahun')->default(date('Y'));
+            $table->enum('status', ['Baru', 'Acc', 'Cancel'])
+                ->default('Baru');
 
             $table->timestamps();
         });

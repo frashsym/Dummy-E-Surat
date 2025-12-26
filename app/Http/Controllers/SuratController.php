@@ -6,7 +6,7 @@ use App\Models\TransaksiSurat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
-// use App\Notifications\SuratBaruNotification;5ew
+// use App\Notifications\SuratBaruNotification;
 use Carbon\Carbon;
 
 class SuratController extends Controller
